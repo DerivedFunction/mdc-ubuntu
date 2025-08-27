@@ -12,7 +12,8 @@
 		"ghcr.io/bascodes/devcontainer-features/usbutils:1": {}
 	},
 	"runArgs": [
-		"--device=/dev/bus/usb:/dev/bus/usb" // forwards all USB devices
+		"--privileged",
+		"--volume=/dev/bus/usb:/dev/bus/usb"
 	],
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
