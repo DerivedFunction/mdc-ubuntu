@@ -52,12 +52,4 @@ RUN sudo apt update && \
 # -----------------------------
 SHELL ["/bin/bash", "-c"]
 RUN echo "source /opt/ros/humble/setup.bash" >> /root/.bashrc
-
-# Add Kinect udev rules (ignored if not supported in Docker)
-RUN bash -c 'cat > /etc/udev/rules.d/99-k4a.rules <<EOF || true \
-    ATTRS{idVendor}=="045e", ATTRS{idProduct}=="097a", MODE="0666", GROUP="plugdev" \
-    ATTRS{idVendor}=="045e", ATTRS{idProduct}=="097b", MODE="0666", GROUP="plugdev" \
-    ATTRS{idVendor}=="045e", ATTRS{idProduct}=="097c", MODE="0666", GROUP="plugdev" \
-    ATTRS{idVendor}=="045e", ATTRS{idProduct}=="097d", MODE="0666", GROUP="plugdev" \
-    ATTRS{idVendor}=="045e", ATTRS{idProduct}=="097e", MODE="0666", GROUP="plugdev" \
-    EOF' || true
+RUN "chmod +x installKinect.sh && ./installKinect.sh"
