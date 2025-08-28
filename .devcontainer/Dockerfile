@@ -64,7 +64,7 @@ RUN echo "source /opt/ros/humble/setup.bash" >> /root/.bashrc
 # Run the install script, then remove it
 COPY ./installKinect.sh /root/installKinect.sh
 RUN sudo chmod +x /root/installKinect.sh
-RUN sh /root/installKinect.sh
+RUN /root/installKinect.sh
 RUN rm /root/installKinect.sh
 
 # Copy the vimrc file and then quit
