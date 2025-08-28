@@ -58,7 +58,6 @@ RUN curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 
 # Run the install script
 COPY installKinect.sh ~/installKinect.sh
-RUN cat ~/installKinect.sh | bash
 RUN ~/installKinect.sh
 RUN rm -f installKinect.sh
 
