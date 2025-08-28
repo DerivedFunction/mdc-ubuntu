@@ -33,9 +33,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # -----------------------------
+# ROS2 Tools (colcon, rosdep, etc.)
+# -----------------------------
+RUN pip3 install -U \
+    colcon-common-extensions \
+    rosdep \
+    vcstool \
+    argcomplete
+
+# -----------------------------
 # Azure Kinect SDK setup
 # -----------------------------
-
 RUN wget https://packages.microsoft.com/ubuntu/18.04/prod/pool/main/k/k4a-tools/k4a-tools_1.4.2_amd64.deb
 RUN wget https://packages.microsoft.com/ubuntu/18.04/prod/pool/main/libk/libk4a1.4/libk4a1.4_1.4.2_amd64.deb
 RUN wget https://packages.microsoft.com/ubuntu/18.04/prod/pool/main/libk/libk4a1.4-dev/libk4a1.4-dev_1.4.2_amd64.deb
