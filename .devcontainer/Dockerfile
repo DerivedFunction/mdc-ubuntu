@@ -65,10 +65,5 @@ RUN rm -f /root/installKinect.sh
 # Copy the vimrc file and then quit
 COPY ./.vimrc ~/.vimrc
 RUN vim +PlugInstall +q +q
-
-# -----------------------------
-# ROS setup on container start
-# -----------------------------
-SHELL ["/bin/bash", "-c"]
 RUN echo "source /opt/ros/humble/setup.bash" >> /root/.bashrc
 
