@@ -1,11 +1,10 @@
 import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
+from launch.actions import DeclareLaunchArgument, SetEnvironmentVariable
 from launch.substitutions import LaunchConfiguration, Command
 from launch_ros.actions import Node
 
-# NOTE: The 'launch_ros.qos' import has been removed for compatibility.
 
 def generate_launch_description():
 
@@ -22,9 +21,8 @@ def generate_launch_description():
     # Declare launch arguments
     use_sim_time = LaunchConfiguration('use_sim_time')
 
-    # Define parameters for the RTAB-Map nodes
+    # Define parameters for RTAB-Map nodes
     rtabmap_parameters = {
-        # CORE PARAMETERS
         'frame_id': 'camera_base',
         'subscribe_depth': True,
         'subscribe_rgb': True,
@@ -32,25 +30,25 @@ def generate_launch_description():
         'approx_sync': True,
         'approx_sync_max_interval': 0.04,
 
-        # QoS settings: 2=SensorDataQoS. RTAB-Map understands this integer value.
+        # QoS settings: 2=SensorDataQoS
         'qos_image': 2,
         'qos_imu': 2,
 
-        # ODOMETRY PARAMETERS - Tuned for more robust visual tracking
-        'Reg/Strategy': '0',          # Use Visual Odometry
-        'Odom/Strategy': '0',         # Use Frame-to-Frame tracking
-        'Vis/MinInliers': '15',       # Minimum inliers to accept a transform
-        'Odom/ResetCountdown': '10',  # Reset odometry after 10 consecutive lost frames
-        'Vis/FeatureType': '8',       # Use ORB features (fast and patent-free)
-        'OdomF2M/MaxSize': '1000',    # Local map size for odometry
+        # ODOMETRY PARAMETERS
+        'Reg/Strategy': '0',          # Visual Odometry
+        'Odom/Strategy': '0',         # Frame-to-Frame tracking
+        'Vis/MinInliers': '15',
+        'Odom/ResetCountdown': '10',
+        'Vis/FeatureType': '8',       # ORB
+        'OdomF2M/MaxSize': '1000',
 
         # LOOP CLOSURE & MAPPING
-        'Grid/FromDepth': 'true',     # Create occupancy grid from depth data
-        'Reg/Force3DoF': 'true',      # Force 2D-style mapping (avoids drift in height)
-        'Grid/RangeMax': '5.0'        # Max range of the depth sensor to consider for mapping
+        'Grid/FromDepth': 'true',
+        'Reg/Force3DoF': 'true',
+        'Grid/RangeMax': '5.0'
     }
 
-    # Remappings to connect the Kinect driver topics to RTAB-Map's expected topics
+    # Remappings to connect Kinect topics to RTAB-Map
     rtabmap_remapping = [
         ('rgb/image', '/rgb/image_raw'),
         ('rgb/camera_info', '/rgb/camera_info'),
@@ -58,6 +56,10 @@ def generate_launch_description():
     ]
     
     return LaunchDescription([
+
+        # Environment variables for USB stability under WSL2 + Docker
+        SetEnvironmentVariable(name='LIBUSB_DEBUG', value='4'),
+        SetEnvironmentVariable(name='USB_CORE_ATTACH', value='1'),
         
         DeclareLaunchArgument('use_sim_time', default_value='false',
                               description='Use simulation (Gazebo) clock if true'),
@@ -66,7 +68,6 @@ def generate_launch_description():
         Node(
             package='robot_state_publisher',
             executable='robot_state_publisher',
-            name='robot_state_publisher',
             output='screen',
             parameters=[{
                 'robot_description': Command(['xacro ', urdf_file_path]),
@@ -78,16 +79,17 @@ def generate_launch_description():
         Node(
             package='azure_kinect_ros_driver',
             executable='node',
-            name='k4a',
             output='screen',
+            respawn=True,
+            respawn_delay=3.0,
             parameters=[{
                 'depth_enabled': True,
                 'depth_mode': 'NFOV_UNBINNED',
                 'color_enabled': True,
-                'color_resolution': '720P',
+                'color_resolution': '720P',   # Lowered for performance
                 'fps': 5,
-                'point_cloud': True,
-                'rgb_point_cloud': True,
+                'point_cloud': False,         # Disabled for stability
+                'rgb_point_cloud': False,
                 'point_cloud_in_depth_frame': False,
                 'synchronized_images_only': True,
                 'imu_rate_target': 100,
