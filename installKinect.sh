@@ -1,33 +1,34 @@
-#!/bin/bash
-set -e
+# Download debs (you already did)
+wget https://packages.microsoft.com/ubuntu/18.04/prod/pool/main/k/k4a-tools/k4a-tools_1.4.2_amd64.deb
+wget https://packages.microsoft.com/ubuntu/18.04/prod/pool/main/libk/libk4a1.4/libk4a1.4_1.4.2_amd64.deb
+wget https://packages.microsoft.com/ubuntu/18.04/prod/pool/main/libk/libk4a1.4-dev/libk4a1.4-dev_1.4.2_amd64.deb
+wget http://archive.ubuntu.com/ubuntu/pool/universe/libs/libsoundio/libsoundio1_1.1.0-1_amd64.deb
 
-# Import Ubuntu security key
-sudo gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3B4FE6ACC0B21F32
-sudo gpg --export --armor 3B4FE6ACC0B21F32 | sudo tee /etc/apt/trusted.gpg.d/ubuntu-security.asc
+# Install debs
+sudo dpkg -i libsoundio1_1.1.0-1_amd64.deb
+sudo dpkg -i libk4a1.4_1.4.2_amd64.deb
+sudo dpkg -i libk4a1.4-dev_1.4.2_amd64.deb
+sudo dpkg -i k4a-tools_1.4.2_amd64.deb
 
-# Backup sources.list
-sudo cp /etc/apt/sources.list /etc/apt/sources.list.old
-echo "Backed up /etc/apt/sources.list to /etc/apt/sources.list.old"
+# Fix dependencies
+ACCEPT_EULA=Y apt-get install -f
 
-# Replace with custom bionic sources.list
-sudo cp sources.list /etc/apt/sources.list
-echo "Overwrote /etc/apt/sources.list with sources.list"
+sudo tee /etc/udev/rules.d/99-k4a.rules > /dev/null <<'EOF'
+# Azure Kinect DK USB device rules
 
-# Add Microsoft repo for Ubuntu 18.04
-wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
-sudo dpkg -i packages-microsoft-prod.deb
-rm packages-microsoft-prod.deb
+# Bus 002 Device 116: ID 045e:097a Microsoft Corp.  - Generic Superspeed USB Hub
+# Bus 001 Device 015: ID 045e:097b Microsoft Corp.  - Generic USB Hub
+# Bus 002 Device 118: ID 045e:097c Microsoft Corp.  - Azure Kinect Depth Camera
+# Bus 002 Device 117: ID 045e:097d Microsoft Corp.  - Azure Kinect 4K Camera
+# Bus 001 Device 016: ID 045e:097e Microsoft Corp.  - Azure Kinect Microphone Array
 
-# Remove any jammy or 20.04 repo entries accidentally added
-sudo sed -i '/ubuntu\/20.04/d' /etc/apt/sources.list.d/*.list || true
-sudo sed -i '/jammy/d' /etc/apt/sources.list.d/*.list || true
+BUS!="usb", ACTION!="add", SUBSYSTEM!=="usb_device", GOTO="k4a_logic_rules_end"
 
-# Update apt cache
-sudo apt-get update
+ATTRS{idVendor}=="045e", ATTRS{idProduct}=="097a", MODE="0666", GROUP="plugdev"
+ATTRS{idVendor}=="045e", ATTRS{idProduct}=="097b", MODE="0666", GROUP="plugdev"
+ATTRS{idVendor}=="045e", ATTRS{idProduct}=="097c", MODE="0666", GROUP="plugdev"
+ATTRS{idVendor}=="045e", ATTRS{idProduct}=="097d", MODE="0666", GROUP="plugdev"
+ATTRS{idVendor}=="045e", ATTRS{idProduct}=="097e", MODE="0666", GROUP="plugdev"
 
-# Install Kinect packages
-sudo apt-get install \
-    libsoundio1 \
-    libk4a1.4 \
-    libk4a1.4-dev \
-    k4a-tools
+LABEL="k4a_logic_rules_end"
+EOF
