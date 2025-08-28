@@ -39,7 +39,8 @@ RUN pip3 install -U \
     colcon-common-extensions \
     rosdep \
     vcstool \
-    argcomplete
+    argcomplete \
+    ros-humble-xacro
 # Enable argcomplete for bash (colcon/ros2 tab-completion)
 RUN activate-global-python-argcomplete --user && \
     echo 'eval "$(register-python-argcomplete colcon)"' >> /root/.bashrc && \
@@ -72,6 +73,4 @@ RUN curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 COPY .vimrc /root/
 RUN vim +PlugInstall +q +q
 RUN echo "source /opt/ros/humble/setup.bash" >> /root/.bashrc
-
-RUN git clone -b humble https://github.com/microsoft/Azure_Kinect_ROS_Driver.git
 
