@@ -1,16 +1,15 @@
-# File: ~/NEW-TAB/Azure_Kinect_ROS_Driver/launch/kinect_rtabmap.launch.py
-
 import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
-from launch.substitutions import LaunchConfiguration
+from launch.substitutions import LaunchConfiguration, Command
 from launch_ros.actions import Node
+
+# NOTE: The 'launch_ros.qos' import has been removed for compatibility.
 
 def generate_launch_description():
 
     # Paths to configuration files
-    # Corrected to use your package name 'Azure_Kinect_ROS_Driver'
     azure_kinect_ros_driver_pkg_dir = get_package_share_directory('azure_kinect_ros_driver')
     rtabmap_ros_pkg_dir = get_package_share_directory('rtabmap_ros')
     
@@ -21,31 +20,41 @@ def generate_launch_description():
     rviz_config_file = os.path.join(rtabmap_ros_pkg_dir, 'launch', 'config', 'rgbd.rviz')
 
     # Declare launch arguments
-    use_sim_time = LaunchConfiguration('use_sim_time', default='false')
+    use_sim_time = LaunchConfiguration('use_sim_time')
 
     # Define parameters for the RTAB-Map nodes
     rtabmap_parameters = {
-        'frame_id': 'camera_base_link',
+        # CORE PARAMETERS
+        'frame_id': 'camera_base',
         'subscribe_depth': True,
         'subscribe_rgb': True,
-        'subscribe_scan': False,
-        'approx_sync': True,
         'use_sim_time': use_sim_time,
+        'approx_sync': True,
+        'approx_sync_max_interval': 0.04,
+
+        # QoS settings: 2=SensorDataQoS. RTAB-Map understands this integer value.
         'qos_image': 2,
         'qos_imu': 2,
-        'Reg/Strategy': '1', # 0=Vis, 1=Icp, 2=VisIcp
-        'Icp/VoxelSize': '0.05',
-        'Icp/MaxCorrespondenceDistance': '0.2',
-        'Vis/MinInliers': '15',
-        'Odom/ResetCountdown': '10',
-        'Grid/FromDepth': 'true'
+
+        # ODOMETRY PARAMETERS - Tuned for more robust visual tracking
+        'Reg/Strategy': '0',          # Use Visual Odometry
+        'Odom/Strategy': '0',         # Use Frame-to-Frame tracking
+        'Vis/MinInliers': '15',       # Minimum inliers to accept a transform
+        'Odom/ResetCountdown': '10',  # Reset odometry after 10 consecutive lost frames
+        'Vis/FeatureType': '8',       # Use ORB features (fast and patent-free)
+        'OdomF2M/MaxSize': '1000',    # Local map size for odometry
+
+        # LOOP CLOSURE & MAPPING
+        'Grid/FromDepth': 'true',     # Create occupancy grid from depth data
+        'Reg/Force3DoF': 'true',      # Force 2D-style mapping (avoids drift in height)
+        'Grid/RangeMax': '5.0'        # Max range of the depth sensor to consider for mapping
     }
 
     # Remappings to connect the Kinect driver topics to RTAB-Map's expected topics
     rtabmap_remapping = [
         ('rgb/image', '/rgb/image_raw'),
         ('rgb/camera_info', '/rgb/camera_info'),
-        ('depth/image', '/depth_to_rgb/image_raw') # Use registered depth image
+        ('depth/image', '/depth_to_rgb/image_raw')
     ]
     
     return LaunchDescription([
@@ -59,28 +68,31 @@ def generate_launch_description():
             executable='robot_state_publisher',
             name='robot_state_publisher',
             output='screen',
-            parameters=[{'robot_description': open(urdf_file_path).read(),
-                         'use_sim_time': use_sim_time}]
+            parameters=[{
+                'robot_description': Command(['xacro ', urdf_file_path]),
+                'use_sim_time': use_sim_time
+            }]
         ),
 
-        # Azure Kinect ROS Driver Node - Corrected for your specific package
+        # Azure Kinect ROS Driver Node
         Node(
-            package='Azure_Kinect_ROS_Driver',
-            executable='k4a_ros_bridge_node', # Corrected executable name
+            package='azure_kinect_ros_driver',
+            executable='node',
             name='k4a',
+            output='screen',
             parameters=[{
                 'depth_enabled': True,
                 'depth_mode': 'NFOV_UNBINNED',
                 'color_enabled': True,
                 'color_resolution': '720P',
-                'fps': 30,
+                'fps': 5,
                 'point_cloud': True,
                 'rgb_point_cloud': True,
                 'point_cloud_in_depth_frame': False,
+                'synchronized_images_only': True,
                 'imu_rate_target': 100,
                 'use_sim_time': use_sim_time
-            }],
-            output='screen'
+            }]
         ),
 
         # RTAB-Map Visual Odometry Node
@@ -113,38 +125,3 @@ def generate_launch_description():
             parameters=[{'use_sim_time': use_sim_time}]
         )
     ])
-    
-'''
-
-Now, from the root of your workspace (`~/NEW-TAB`), build the packages and launch the new file.
-
-1.  **Navigate to your workspace root:**
-
-    ```bash
-    cd ~/NEW-TAB
-    ```
-
-2.  **Build the workspace.** This will make ROS2 aware of your new launch file.
-
-    ```bash
-    colcon build --symlink-install --packages-select Azure_Kinect_ROS_Driver
-    ```
-
-    *(Building just the one package is faster, but a full `colcon build` will also work.)*
-
-3.  **Source the workspace:**
-
-    ```bash
-    source install/setup.bash
-    ```
-
-4.  **Launch the SLAM system:**
-
-    ```bash
-    ros2 launch Azure_Kinect_ROS_Driver kinect_rtabmap.launch.py
-    ```
-
-The system should now start correctly. RViz2 will open, and as you move the camera, you will see a 3D map being built in the `/rtabmap/cloud_map` topic and a 2D map in the `/map` topic.
- 
- 
- '''   
