@@ -6,13 +6,7 @@
 	"build": {
 		"dockerfile": "Dockerfile"
 	},
-	"features": {
-		"ghcr.io/devcontainers/features/python:1": {
-			"installTools": true,
-			"version": "os-provided"
-		},
-		"ghcr.io/bascodes/devcontainer-features/usbutils:1": {}
-	},
+	
 	"runArgs": [
 		"--privileged",
 		"--volume=/dev/bus/usb:/dev/bus/usb"
