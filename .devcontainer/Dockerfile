@@ -47,9 +47,21 @@ RUN dpkg -i k4a-tools_1.4.2_amd64.deb  || true
 RUN sudo apt update && \
  apt --fix-broken install -y
 
+# Install VIM and vim-plug
+RUN apt install vim
+RUN curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 # -----------------------------
 # ROS setup on container start
 # -----------------------------
 SHELL ["/bin/bash", "-c"]
 RUN echo "source /opt/ros/humble/setup.bash" >> /root/.bashrc
-RUN "chmod +x installKinect.sh && ./installKinect.sh"
+
+# Run the install script, then remove it
+COPY ./installKinect.sh ~/installKinect.sh
+RUN chmod +x ~/installKinect.sh
+RUN ~/installKinect.sh && rm ~/installKinect.sh
+
+# Copy the vimrc file and then quit
+COPY ./.vimrc ~/.vimrc
+RUN vim +PlugInstall +q +q
