@@ -63,7 +63,7 @@ RUN curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 # RUN rm -f /root/installKinect.sh
 
 # Copy the vimrc file and then quit
-COPY ./.vimrc ~/.vimrc
+COPY .vimrc /root/
 RUN vim +PlugInstall +q +q
 RUN echo "source /opt/ros/humble/setup.bash" >> /root/.bashrc
 
