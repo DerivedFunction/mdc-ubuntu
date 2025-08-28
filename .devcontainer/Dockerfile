@@ -31,17 +31,25 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # -----------------------------
 # Azure Kinect SDK setup
 # -----------------------------
-RUN wget https://packages.microsoft.com/ubuntu/18.04/prod/pool/main/k/k4a-tools/k4a-tools_1.4.2_amd64.deb && \
-    wget https://packages.microsoft.com/ubuntu/18.04/prod/pool/main/libk/libk4a1.4/libk4a1.4_1.4.2_amd64.deb && \
-    wget https://packages.microsoft.com/ubuntu/18.04/prod/pool/main/libk/libk4a1.4-dev/libk4a1.4-dev_1.4.2_amd64.deb && \
-    wget http://archive.ubuntu.com/ubuntu/pool/universe/libs/libsoundio/libsoundio1_1.1.0-1_amd64.deb && \
-    dpkg -i libsoundio1_1.1.0-1_amd64.deb || true && \
-    dpkg -i libk4a1.4_1.4.2_amd64.deb || true && \
-    dpkg -i libk4a1.4-dev_1.4.2_amd64.deb || true && \
-    dpkg -i k4a-tools_1.4.2_amd64.deb || true && \
-    ACCEPT_EULA=Y apt-get install -f -y || true && \
-    rm -f *.deb
 
+RUN wget https://packages.microsoft.com/ubuntu/18.04/prod/pool/main/k/k4a-tools/k4a-tools_1.4.2_amd64.deb
+RUN wget https://packages.microsoft.com/ubuntu/18.04/prod/pool/main/libk/libk4a1.4/libk4a1.4_1.4.2_amd64.deb
+RUN wget https://packages.microsoft.com/ubuntu/18.04/prod/pool/main/libk/libk4a1.4-dev/libk4a1.4-dev_1.4.2_amd64.deb
+RUN wget http://archive.ubuntu.com/ubuntu/pool/universe/libs/libsoundio/libsoundio1_1.1.0-1_amd64.deb
+
+# Install debs
+RUN dpkg -i libsoundio1_1.1.0-1_amd64.deb
+RUN ACCEPT_EULA=Y dpkg -i libk4a1.4_1.4.2_amd64.deb
+RUN ACCEPT_EULA=Y dpkg -i libk4a1.4-dev_1.4.2_amd64.deb
+RUN dpkg -i k4a-tools_1.4.2_amd64.deb
+
+# Fix dependencies
+RUN sudo apt update && \
+ apt --fix-broken install
+
+# -----------------------------
+# ROS setup on container start
+# -----------------------------
 SHELL ["/bin/bash", "-c"]
 RUN echo "source /opt/ros/humble/setup.bash" >> /root/.bashrc
 
@@ -51,5 +59,5 @@ RUN bash -c 'cat > /etc/udev/rules.d/99-k4a.rules <<EOF || true \
     ATTRS{idVendor}=="045e", ATTRS{idProduct}=="097b", MODE="0666", GROUP="plugdev" \
     ATTRS{idVendor}=="045e", ATTRS{idProduct}=="097c", MODE="0666", GROUP="plugdev" \
     ATTRS{idVendor}=="045e", ATTRS{idProduct}=="097d", MODE="0666", GROUP="plugdev" \
-    ATTRS{idVendor}=="045e", ATTRS{idProduct}=="097e", MODE="0666", GROUP="plugdev" \ 
+    ATTRS{idVendor}=="045e", ATTRS{idProduct}=="097e", MODE="0666", GROUP="plugdev" \
     EOF' || true
