@@ -29,8 +29,7 @@ RUN export ROS_APT_SOURCE_VERSION=$(curl -s https://api.github.com/repos/ros-inf
 
 # Update apt and install ROS2 Humble Desktop
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    ros-humble-desktop \
-    
+    ros-humble-desktop \    
     && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get install ros-humble-xacro \
