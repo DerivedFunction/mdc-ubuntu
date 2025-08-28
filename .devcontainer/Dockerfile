@@ -46,8 +46,9 @@ RUN pip3 install -U \
     colcon-common-extensions \
     rosdep \
     vcstool \
-    argcomplete 
-# Enable argcomplete for bash (colcon/ros2 tab-completion)
+    argcomplete \
+    xboxdrv
+    # Enable argcomplete for bash (colcon/ros2 tab-completion)
 RUN activate-global-python-argcomplete --user && \
     echo 'eval "$(register-python-argcomplete colcon)"' >> /root/.bashrc && \
     echo 'eval "$(register-python-argcomplete ros2)"' >> /root/.bashrc
