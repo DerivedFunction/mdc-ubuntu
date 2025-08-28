@@ -52,7 +52,7 @@ RUN sudo apt update && \
  apt --fix-broken install -y
 
 # Install VIM and vim-plug
-RUN apt install vim
+RUN apt install vim -y
 RUN curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 # -----------------------------
