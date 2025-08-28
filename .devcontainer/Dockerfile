@@ -67,7 +67,7 @@ COPY 99-k4a.rules /etc/udev/rules.d/99-k4a.rules
 RUN groupadd -f plugdev && usermod -aG plugdev root
 
 # Reload udev rules (will apply at container runtime as well)
-RUN udevadm control --reload-rules && udevadm trigger
+# RUN udevadm control --reload-rules && udevadm trigger
 
 # Install necessary files
 RUN wget https://packages.microsoft.com/ubuntu/18.04/prod/pool/main/k/k4a-tools/k4a-tools_1.4.2_amd64.deb
