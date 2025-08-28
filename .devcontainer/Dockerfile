@@ -30,6 +30,7 @@ RUN export ROS_APT_SOURCE_VERSION=$(curl -s https://api.github.com/repos/ros-inf
 # Update apt and install ROS2 Humble Desktop
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-humble-desktop \
+    ros-humble-xacro \
     && rm -rf /var/lib/apt/lists/*
 
 # -----------------------------
@@ -39,8 +40,7 @@ RUN pip3 install -U \
     colcon-common-extensions \
     rosdep \
     vcstool \
-    argcomplete \
-    ros-humble-xacro
+    argcomplete 
 # Enable argcomplete for bash (colcon/ros2 tab-completion)
 RUN activate-global-python-argcomplete --user && \
     echo 'eval "$(register-python-argcomplete colcon)"' >> /root/.bashrc && \
