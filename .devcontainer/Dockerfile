@@ -61,3 +61,5 @@ COPY .vimrc /root/
 RUN vim +PlugInstall +q +q
 RUN echo "source /opt/ros/humble/setup.bash" >> /root/.bashrc
 
+RUN git clone -b humble https://github.com/microsoft/Azure_Kinect_ROS_Driver.git
+
