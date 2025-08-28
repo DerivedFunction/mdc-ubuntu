@@ -7,6 +7,4 @@ curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 
 # remember to add to ~/.bashrc 
 # source /opt/ros/humble/setup.bash
-
-sudo apt-get install usbutils
    
