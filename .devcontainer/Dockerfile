@@ -35,7 +35,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Add additional addons for ROS2 Humble
 RUN apt-get update && apt-get install ros-humble-xacro \
     ros-humble-joint-state-publisher \
-    ros-humble-joint-state-publisher-gui
+    ros-humble-joint-state-publisher-gui \
+    ros-humble-rtabmap-ros
+
 
 # -----------------------------
 # ROS2 Tools (colcon, rosdep, etc.)
