@@ -56,18 +56,20 @@ RUN apt install vim -y
 RUN curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-# -----------------------------
-# ROS setup on container start
-# -----------------------------
-SHELL ["/bin/bash", "-c"]
-RUN echo "source /opt/ros/humble/setup.bash" >> /root/.bashrc
-
 # Run the install script, then remove it
 COPY ./installKinect.sh /root/installKinect.sh
 RUN chmod +x /root/installKinect.sh
 RUN /root/installKinect.sh
 RUN rm /root/installKinect.sh
 
+
 # Copy the vimrc file and then quit
 COPY ./.vimrc ~/.vimrc
 RUN vim +PlugInstall +q +q
+
+# -----------------------------
+# ROS setup on container start
+# -----------------------------
+SHELL ["/bin/bash", "-c"]
+RUN echo "source /opt/ros/humble/setup.bash" >> /root/.bashrc
+
