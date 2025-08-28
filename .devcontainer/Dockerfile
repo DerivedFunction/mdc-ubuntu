@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     locales \
     curl \
     wget \
+    udev \
     software-properties-common \
     && locale-gen en_US en_US.UTF-8 \
     && update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
@@ -56,6 +57,19 @@ RUN activate-global-python-argcomplete --user && \
 # -----------------------------
 # Azure Kinect SDK setup
 # -----------------------------
+# -----------------------------
+# Azure Kinect udev rules
+# -----------------------------
+# Copy Kinect rules from project directory into container
+COPY 99-k4a.rules /etc/udev/rules.d/99-k4a.rules
+
+# Ensure plugdev group exists and root is part of it
+RUN groupadd -f plugdev && usermod -aG plugdev root
+
+# Reload udev rules (will apply at container runtime as well)
+RUN udevadm control --reload-rules && udevadm trigger
+
+# Install necessary files
 RUN wget https://packages.microsoft.com/ubuntu/18.04/prod/pool/main/k/k4a-tools/k4a-tools_1.4.2_amd64.deb
 RUN wget https://packages.microsoft.com/ubuntu/18.04/prod/pool/main/libk/libk4a1.4/libk4a1.4_1.4.2_amd64.deb
 RUN wget https://packages.microsoft.com/ubuntu/18.04/prod/pool/main/libk/libk4a1.4-dev/libk4a1.4-dev_1.4.2_amd64.deb
