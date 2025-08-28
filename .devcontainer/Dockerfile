@@ -33,7 +33,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Add additional addons for ROS2 Humble
-RUN apt-get update && apt-get install ros-humble-xacro \
+RUN apt-get update && apt-get install -y ros-humble-xacro \
     ros-humble-joint-state-publisher \
     ros-humble-joint-state-publisher-gui \
     ros-humble-rtabmap-ros
