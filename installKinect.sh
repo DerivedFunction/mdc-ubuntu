@@ -1,50 +1,33 @@
-# Installing Azure-Kinect-SDK 1.4 on Ubuntu 22.04
-# Based on: https://github.com/juancarlosmiranda/azure_kinect_notes/
+#!/bin/bash
+set -e
 
-# Step 1: Install Essential Tools
-sudo apt-get install -y build-essential
-sudo apt-get install -y cmake
-sudo apt-get install -y libgtk2.0-dev
-sudo apt-get install -y libusb-1.0
-sudo apt-get install -y ffmpeg
-sudo apt-get install -y mlocate
-sudo apt-get install -y locate
-sudo apt install -y curl
+# Import Ubuntu security key
+sudo gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3B4FE6ACC0B21F32
+sudo gpg --export --armor 3B4FE6ACC0B21F32 | sudo tee /etc/apt/trusted.gpg.d/ubuntu-security.asc
 
-# Step 2: Add Microsoft Repositories for Ubuntu 20.04 and 18.04
-# Ubuntu 20.04
-curl -sSL https://packages.microsoft.com/keys/microsoft.asc | sudo tee /etc/apt/trusted.gpg.d/microsoft.asc
-sudo apt-add-repository https://packages.microsoft.com/ubuntu/20.04/prod
+# Backup sources.list
+sudo cp /etc/apt/sources.list /etc/apt/sources.list.old
+echo "Backed up /etc/apt/sources.list to /etc/apt/sources.list.old"
 
-# Ubuntu 18.04
-curl -sSL https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
-sudo apt-add-repository https://packages.microsoft.com/ubuntu/18.04/prod
-curl -sSL https://packages.microsoft.com/config/ubuntu/18.04/prod.list | sudo tee /etc/apt/sources.list.d/microsoft-prod.list
-curl -sSL https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+# Replace with custom bionic sources.list
+sudo cp sources.list /etc/apt/sources.list
+echo "Overwrote /etc/apt/sources.list with sources.list"
 
-# Step 3: Install Azure Kinect Packages
+# Add Microsoft repo for Ubuntu 18.04
+wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
+sudo dpkg -i packages-microsoft-prod.deb
+rm packages-microsoft-prod.deb
+
+# Remove any jammy or 20.04 repo entries accidentally added
+sudo sed -i '/ubuntu\/20.04/d' /etc/apt/sources.list.d/*.list || true
+sudo sed -i '/jammy/d' /etc/apt/sources.list.d/*.list || true
+
+# Update apt cache
 sudo apt-get update
-sudo apt-get install -y libk4a1.4
-sudo apt install -y libk4a1.4-dev
 
-# Step 4: Install Dependency libsoundio1
-# Note: libsoundio1 is a dependency for k4a-tools
-# https://packages.ubuntu.com/focal/amd64/libsoundio1/download
-wget mirrors.kernel.org/ubuntu/pool/universe/libs/libsoundio/libsoundio1_1.1.0-1_amd64.deb
-sudo dpkg -i libsoundio1_1.1.0-1_amd64.deb
-sudo apt install -y k4a-tools
-
-# Step 5: Copy Udev Rules so no root / sudo is needed to access the kinect device
-sudo cp 99-k4a.rules /etc/udev/rules.d/
-
-# Expected Output:
-# Bus 004 Device 006: ID 045e:097c Microsoft Corp. Azure Kinect Depth Camera
-# Bus 004 Device 005: ID 045e:097d Microsoft Corp. Azure Kinect 4K Camera
-# Bus 004 Device 004: ID 045e:097a Microsoft Corp. 4-Port USB 3.0 Hub
-# Bus 003 Device 008: ID 045e:097e Microsoft Corp. Azure Kinect Microphone Array
-# Bus 003 Device 006: ID 045e:097b Microsoft Corp. 4-Port USB 2.0 Hub
-
-# Step 7: Run k4aviewer
-# k4aviewer 
-# Instructions: Select ‚Open Device' -> Click ‚Start'
-# Image Should Appear
+# Install Kinect packages
+sudo apt-get install \
+    libsoundio1 \
+    libk4a1.4 \
+    libk4a1.4-dev \
+    k4a-tools
