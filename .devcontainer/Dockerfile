@@ -38,10 +38,10 @@ RUN wget https://packages.microsoft.com/ubuntu/18.04/prod/pool/main/libk/libk4a1
 RUN wget http://archive.ubuntu.com/ubuntu/pool/universe/libs/libsoundio/libsoundio1_1.1.0-1_amd64.deb
 
 # Install debs
-RUN dpkg -i libsoundio1_1.1.0-1_amd64.deb
-RUN ACCEPT_EULA=Y dpkg -i libk4a1.4_1.4.2_amd64.deb
-RUN ACCEPT_EULA=Y dpkg -i libk4a1.4-dev_1.4.2_amd64.deb
-RUN dpkg -i k4a-tools_1.4.2_amd64.deb
+RUN dpkg -i libsoundio1_1.1.0-1_amd64.deb || true
+RUN ACCEPT_EULA=Y dpkg -i libk4a1.4_1.4.2_amd64.deb  || true
+RUN ACCEPT_EULA=Y dpkg -i libk4a1.4-dev_1.4.2_amd64.deb  || true
+RUN dpkg -i k4a-tools_1.4.2_amd64.deb  || true
 
 # Fix dependencies
 RUN sudo apt update && \
