@@ -1,6 +1,5 @@
 # Start with Ubuntu 22.04 base image
-ARG UBUNTU_VERSION=22.04
-FROM ubuntu:${UBUNTU_VERSION}
+FROM mcr.microsoft.com/devcontainers/base:jammy
 
 # Set environment variables for locale
 ENV LANG=en_US.UTF-8
