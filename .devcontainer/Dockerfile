@@ -45,7 +45,7 @@ RUN dpkg -i k4a-tools_1.4.2_amd64.deb  || true
 
 # Fix dependencies
 RUN sudo apt update && \
- apt --fix-broken install
+ apt --fix-broken install -y
 
 # -----------------------------
 # ROS setup on container start
