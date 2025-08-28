@@ -11,7 +11,7 @@ def generate_launch_description():
 
     # Paths to configuration files
     # Corrected to use your package name 'Azure_Kinect_ROS_Driver'
-    azure_kinect_ros_driver_pkg_dir = get_package_share_directory('Azure_Kinect_ROS_Driver')
+    azure_kinect_ros_driver_pkg_dir = get_package_share_directory('azure_kinect_ros_driver')
     rtabmap_ros_pkg_dir = get_package_share_directory('rtabmap_ros')
     
     # Get the URDF file for the camera from your driver package
