@@ -32,6 +32,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-humble-desktop \    
     && rm -rf /var/lib/apt/lists/*
 
+# Add additional addons for ROS2 Humble
 RUN apt-get install ros-humble-xacro \
     ros-humble-joint-state-publisher \
     ros-humble-joint-state-publisher-gui
