@@ -56,12 +56,6 @@ RUN apt install vim -y
 RUN curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-# Run the install script
-# COPY installKinect.sh /root/
-# RUN chmod +x /root/installKinect.sh
-# RUN /root/installKinect.sh
-# RUN rm -f /root/installKinect.sh
-
 # Copy the vimrc file and then quit
 COPY .vimrc /root/
 RUN vim +PlugInstall +q +q
