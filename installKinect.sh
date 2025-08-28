@@ -5,13 +5,14 @@ wget https://packages.microsoft.com/ubuntu/18.04/prod/pool/main/libk/libk4a1.4-d
 wget http://archive.ubuntu.com/ubuntu/pool/universe/libs/libsoundio/libsoundio1_1.1.0-1_amd64.deb
 
 # Install debs
-sudo dpkg -i libsoundio1_1.1.0-1_amd64.deb
-sudo dpkg -i libk4a1.4_1.4.2_amd64.deb
-sudo dpkg -i libk4a1.4-dev_1.4.2_amd64.deb
-sudo dpkg -i k4a-tools_1.4.2_amd64.deb
+dpkg -i libsoundio1_1.1.0-1_amd64.deb
+ACCEPT_EULA=Y dpkg -i libk4a1.4_1.4.2_amd64.deb
+ACCEPT_EULA=Y dpkg -i libk4a1.4-dev_1.4.2_amd64.deb
+dpkg -i k4a-tools_1.4.2_amd64.deb
 
 # Fix dependencies
-ACCEPT_EULA=Y apt-get install -f
+sudo apt update
+apt --fix-broken install
 
 sudo tee /etc/udev/rules.d/99-k4a.rules > /dev/null <<'EOF'
 # Azure Kinect DK USB device rules
