@@ -1,7 +1,6 @@
 *.deb.*
 *.deb
 *.err
-resource
 __pycache__
 build
 install
