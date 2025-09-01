@@ -48,7 +48,8 @@ RUN pip3 install -U \
     rosdep \
     vcstool \
     argcomplete \
-    pygame
+    pygame \
+    pyserial
     # Enable argcomplete for bash (colcon/ros2 tab-completion)
 RUN activate-global-python-argcomplete --user && \
     echo 'eval "$(register-python-argcomplete colcon)"' >> /root/.bashrc && \
