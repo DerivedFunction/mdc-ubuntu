@@ -13,7 +13,10 @@ source install/setup.bash
 # std_msgs: Standard ROS Messages including common message types representing primitive data types
 #           and other basic message constructs, such as multiarrays.
 # geometry_msgs: provides messages for common geometric primitives such as points, vectors, and poses
-colcon build --packages-select laptop
+if [[ "$1" == "build" ]]; then
+  echo "Building package 'laptop'..."
+  colcon build --packages-select laptop
+fi
 
 # Run from laptop's package controller: laptop_controller.py's main function
 ros2 run laptop input_node controller

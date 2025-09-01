@@ -13,8 +13,11 @@ source install/setup.bash
 # std_msgs: Standard ROS Messages including common message types representing primitive data types
 #           and other basic message constructs, such as multiarrays.
 # geometry_msgs: provides messages for common geometric primitives such as points, vectors, and poses
-colcon build --packages-select mdc_car
 
+if [[ "$1" == "build" ]]; then
+  echo "Building package 'mdc_car'..."
+colcon build --packages-select mdc_car
+fi
 # require permission to access the USB port
 sudo chmod a+rw /dev/ttyACM0
 
