@@ -3,3 +3,6 @@
 *.err
 resource
 __pycache__
+build
+install
+log
