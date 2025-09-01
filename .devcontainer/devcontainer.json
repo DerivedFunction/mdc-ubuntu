@@ -16,7 +16,31 @@
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// "postCreateCommand": "uname -a",
 	// Configure tool-specific properties.
-	// "customizations": {},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-python.python",
+				"ms-python.vscode-pylance",
+				"ms-python.black-formatter",
+				"ms-python.isort",
+				"ms-vscode.cpptools",
+				"ms-vscode.cpptools-extension-pack",
+				"ms-vscode.cmake-tools",
+				"twxs.cmake",
+				"ranch-hand-robotics.rde-pack",
+				"ms-python.flake8",
+				"streetsidesoftware.code-spell-checker",
+				"editorconfig.editorconfig",
+				"eamodio.gitlens",
+				"mhutchie.git-graph"
+			],
+			"settings": {
+				"python.formatting.provider": "black",
+				"python.linting.flake8Enabled": true,
+				"editor.formatOnSave": true
+			}
+		}
+	},
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	"remoteUser": "root"
 }
