@@ -1,3 +1,5 @@
 *.deb.*
 *.deb
 *.err
+resource
+__pycache__
