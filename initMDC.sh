@@ -2,7 +2,7 @@
 # Source your ROS version's default setup
 source /opt/ros/humble/setup.bash
 # Clean the directory
-make clean
+rm -rf build install log
 
 # Build only the packages we want
 colcon build --packages-select mdc_car laptop
