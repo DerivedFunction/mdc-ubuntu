@@ -10,7 +10,7 @@ if not dbname:
     dbname = "rtabmap.db"
 if not dbname.endswith(".db"):
     dbname += ".db"
-delete = input("Delete original DB? (y/n): ").strip().lower() == 'y'
+deleteDB = input("Delete original db? (y/n): ").strip().lower() == "y"
 
 def generate_launch_description():
 
@@ -27,9 +27,12 @@ def generate_launch_description():
     # Figure out repo root (two levels up from build/) and save it
     save_location = os.path.abspath(os.path.join(azure_kinect_ros_driver_pkg_dir, '../../../../../.rtabmap_data'))
     default_db_path = os.path.join(save_location, dbname)
-
+    
+    # Declare launch arguments
     use_sim_time = LaunchConfiguration('use_sim_time')
 
+    db_path = LaunchConfiguration('db_path')
+    
     # Define parameters for RTAB-Map nodes
     rtabmap_parameters = {
         'frame_id': 'camera_base',
@@ -65,6 +68,9 @@ def generate_launch_description():
         ('depth/image', '/depth_to_rgb/image_raw')
     ]
     
+    rtabmap_args =[]
+    if deleteDB:
+        rtabmap_args.append('--delete_db_on_start')
     return LaunchDescription([
 
         # Environment variables for USB stability under WSL2 + Docker
@@ -121,7 +127,7 @@ def generate_launch_description():
             output='screen',
             parameters=[rtabmap_parameters],
             remappings=rtabmap_remapping,
-            arguments=['--delete_db_on_start']
+            arguments=rtabmap_args
         ),
 
         # RTAB-Map SLAM Node
@@ -131,7 +137,7 @@ def generate_launch_description():
             output='screen',
             parameters=[rtabmap_parameters],
             remappings=rtabmap_remapping,
-            arguments=['--delete_db_on_start']
+            arguments=rtabmap_args
         ),
         
         # RViz2 Node
