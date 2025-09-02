@@ -19,7 +19,7 @@ def generate_launch_description():
     rviz_config_file = os.path.join(rtabmap_ros_pkg_dir, 'launch', 'config', 'rgbd.rviz')
 
     # Figure out repo root (two levels up from build/) and save it
-    save_location = os.path.abspath(os.path.join(azure_kinect_ros_driver_pkg_dir, '../../../.rtabmap_data'))
+    save_location = os.path.abspath(os.path.join(azure_kinect_ros_driver_pkg_dir, '../../../../../.rtabmap_data'))
     default_db_path = os.path.join(save_location, 'rtabmap.db')
     
     # Declare launch arguments
@@ -51,7 +51,8 @@ def generate_launch_description():
         # LOOP CLOSURE & MAPPING
         'Grid/FromDepth': 'true',
         'Reg/Force3DoF': 'true',
-        'Grid/RangeMax': '5.0'
+        'Grid/RangeMax': '5.0',
+        'database_path': default_db_path
     }
 
     # Remappings to connect Kinect topics to RTAB-Map
@@ -64,8 +65,8 @@ def generate_launch_description():
     return LaunchDescription([
 
         # Environment variables for USB stability under WSL2 + Docker
-        SetEnvironmentVariable(name='LIBUSB_DEBUG', value='4'),
-        SetEnvironmentVariable(name='USB_CORE_ATTACH', value='1'),
+        # SetEnvironmentVariable(name='LIBUSB_DEBUG', value='4'),
+        # SetEnvironmentVariable(name='USB_CORE_ATTACH', value='1'),
         
         DeclareLaunchArgument('use_sim_time', default_value='false',
                               description='Use simulation (Gazebo) clock if true'),
@@ -127,9 +128,7 @@ def generate_launch_description():
             output='screen',
             parameters=[rtabmap_parameters],
             remappings=rtabmap_remapping,
-            parameters=[{
-                'database_path': default_db_path
-            }]
+            arguments=['--delete_db_on_start']
         ),
         
         # RViz2 Node
