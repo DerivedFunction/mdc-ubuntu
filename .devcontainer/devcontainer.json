@@ -6,10 +6,11 @@
 	"build": {
 		"dockerfile": "Dockerfile"
 	},
-	
 	"runArgs": [
 		"--privileged",
-		"--volume=/dev/bus/usb:/dev/bus/usb"
+		"--volume=/dev/bus/usb:/dev/bus/usb",
+		"--memory=8g", // Container RAM limit (safe under 10 GB WSL2 cap)
+		"--memory-swap=10g" // Allow some swap buffer
 	],
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
