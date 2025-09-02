@@ -18,9 +18,15 @@ def generate_launch_description():
     # Get the default RViz configuration file from rtabmap_ros
     rviz_config_file = os.path.join(rtabmap_ros_pkg_dir, 'launch', 'config', 'rgbd.rviz')
 
+    # Figure out repo root (two levels up from build/) and save it
+    save_location = os.path.abspath(os.path.join(azure_kinect_ros_driver_pkg_dir, '../../../.rtabmap_data'))
+    default_db_path = os.path.join(save_location, 'rtabmap.db')
+    
     # Declare launch arguments
     use_sim_time = LaunchConfiguration('use_sim_time')
 
+    db_path = LaunchConfiguration('db_path')
+    
     # Define parameters for RTAB-Map nodes
     rtabmap_parameters = {
         'frame_id': 'camera_base',
@@ -63,7 +69,14 @@ def generate_launch_description():
         
         DeclareLaunchArgument('use_sim_time', default_value='false',
                               description='Use simulation (Gazebo) clock if true'),
-
+        
+        # Set where to save the data
+        DeclareLaunchArgument(
+            'db_path',
+            default_value=default_db_path,
+            description='Path to store or load the RTAB-Map database file'
+        ),
+        
         # Robot State Publisher Node
         Node(
             package='robot_state_publisher',
@@ -114,7 +127,7 @@ def generate_launch_description():
             output='screen',
             parameters=[rtabmap_parameters],
             remappings=rtabmap_remapping,
-            arguments=['--delete_db_on_start']
+            arguments=['--database_path', db_path]
         ),
         
         # RViz2 Node
