@@ -5,6 +5,12 @@ from launch.actions import DeclareLaunchArgument, SetEnvironmentVariable
 from launch.substitutions import LaunchConfiguration, Command
 from launch_ros.actions import Node
 
+dbname = input("Enter map name: ").strip()
+if not dbname:
+    dbname = "rtabmap.db"
+if not dbname.endswith(".db"):
+    dbname += ".db"
+delete = input("Delete original DB? (y/n): ").strip().lower() == 'y'
 
 def generate_launch_description():
 
@@ -20,13 +26,10 @@ def generate_launch_description():
 
     # Figure out repo root (two levels up from build/) and save it
     save_location = os.path.abspath(os.path.join(azure_kinect_ros_driver_pkg_dir, '../../../../../.rtabmap_data'))
-    default_db_path = os.path.join(save_location, 'rtabmap.db')
-    
-    # Declare launch arguments
+    default_db_path = os.path.join(save_location, dbname)
+
     use_sim_time = LaunchConfiguration('use_sim_time')
 
-    db_path = LaunchConfiguration('db_path')
-    
     # Define parameters for RTAB-Map nodes
     rtabmap_parameters = {
         'frame_id': 'camera_base',
