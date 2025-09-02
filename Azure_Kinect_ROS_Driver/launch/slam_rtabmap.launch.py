@@ -127,7 +127,9 @@ def generate_launch_description():
             output='screen',
             parameters=[rtabmap_parameters],
             remappings=rtabmap_remapping,
-            arguments=['--database_path', db_path]
+            parameters=[{
+                'database_path': default_db_path
+            }]
         ),
         
         # RViz2 Node
