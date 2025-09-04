@@ -1,3 +1,4 @@
 #!/bin/bash
 
-scp -Cr ../mdc-ubuntu capstone@mdc-nx.local:/home/capstone/mdc-ubuntu
+#scp -Cr ../mdc-ubuntu capstone@mdc-nx.local:/home/capstone/mdc-ubuntu
+rsync -az --progress ../mdc-ubuntu capstone@mdc-nx.local:/home/capstone
