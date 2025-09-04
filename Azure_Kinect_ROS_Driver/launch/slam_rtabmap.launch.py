@@ -5,6 +5,12 @@ from launch.actions import DeclareLaunchArgument, SetEnvironmentVariable
 from launch.substitutions import LaunchConfiguration, Command
 from launch_ros.actions import Node
 
+dbname = input("Enter map name: ").strip()
+if not dbname:
+    dbname = "rtabmap.db"
+if not dbname.endswith(".db"):
+    dbname += ".db"
+deleteDB = input("Delete original db? (y/n): ").strip().lower() == "y"
 
 def generate_launch_description():
 
@@ -18,9 +24,15 @@ def generate_launch_description():
     # Get the default RViz configuration file from rtabmap_ros
     rviz_config_file = os.path.join(rtabmap_ros_pkg_dir, 'launch', 'config', 'rgbd.rviz')
 
+    # Figure out repo root (two levels up from build/) and save it
+    save_location = os.path.abspath(os.path.join(azure_kinect_ros_driver_pkg_dir, '../../../../../.rtabmap_data'))
+    default_db_path = os.path.join(save_location, dbname)
+    
     # Declare launch arguments
     use_sim_time = LaunchConfiguration('use_sim_time')
 
+    db_path = LaunchConfiguration('db_path')
+    
     # Define parameters for RTAB-Map nodes
     rtabmap_parameters = {
         'frame_id': 'camera_base',
@@ -45,7 +57,8 @@ def generate_launch_description():
         # LOOP CLOSURE & MAPPING
         'Grid/FromDepth': 'true',
         'Reg/Force3DoF': 'true',
-        'Grid/RangeMax': '5.0'
+        'Grid/RangeMax': '5.0',
+        'database_path': default_db_path
     }
 
     # Remappings to connect Kinect topics to RTAB-Map
@@ -55,15 +68,25 @@ def generate_launch_description():
         ('depth/image', '/depth_to_rgb/image_raw')
     ]
     
+    rtabmap_args =[]
+    if deleteDB:
+        rtabmap_args.append('--delete_db_on_start')
     return LaunchDescription([
 
         # Environment variables for USB stability under WSL2 + Docker
-        SetEnvironmentVariable(name='LIBUSB_DEBUG', value='4'),
-        SetEnvironmentVariable(name='USB_CORE_ATTACH', value='1'),
+        # SetEnvironmentVariable(name='LIBUSB_DEBUG', value='4'),
+        # SetEnvironmentVariable(name='USB_CORE_ATTACH', value='1'),
         
         DeclareLaunchArgument('use_sim_time', default_value='false',
                               description='Use simulation (Gazebo) clock if true'),
-
+        
+        # Set where to save the data
+        DeclareLaunchArgument(
+            'db_path',
+            default_value=default_db_path,
+            description='Path to store or load the RTAB-Map database file'
+        ),
+        
         # Robot State Publisher Node
         Node(
             package='robot_state_publisher',
@@ -87,7 +110,7 @@ def generate_launch_description():
                 'depth_mode': 'NFOV_UNBINNED',
                 'color_enabled': True,
                 'color_resolution': '720P',   # Lowered for performance
-                'fps': 5,
+                'fps': 30,
                 'point_cloud': False,         # Disabled for stability
                 'rgb_point_cloud': False,
                 'point_cloud_in_depth_frame': False,
@@ -104,7 +127,7 @@ def generate_launch_description():
             output='screen',
             parameters=[rtabmap_parameters],
             remappings=rtabmap_remapping,
-            arguments=['--delete_db_on_start']
+            arguments=rtabmap_args
         ),
 
         # RTAB-Map SLAM Node
@@ -114,7 +137,7 @@ def generate_launch_description():
             output='screen',
             parameters=[rtabmap_parameters],
             remappings=rtabmap_remapping,
-            arguments=['--delete_db_on_start']
+            arguments=rtabmap_args
         ),
         
         # RViz2 Node
