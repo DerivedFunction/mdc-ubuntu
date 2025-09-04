@@ -37,8 +37,11 @@
 			],
 			"settings": {
 				"python.formatting.provider": "black",
-				"python.linting.flake8Enabled": false,
-				"editor.formatOnSave": true
+				"editor.formatOnSave": true,
+				"flake8.args": [
+					"--disable=E501,W293,E302",
+					"--max-line-length=120"
+				]
 			}
 		}
 	},
