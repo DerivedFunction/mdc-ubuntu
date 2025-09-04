@@ -37,7 +37,7 @@
 			],
 			"settings": {
 				"python.formatting.provider": "black",
-				"python.linting.flake8Enabled": true,
+				"python.linting.flake8Enabled": false,
 				"editor.formatOnSave": true
 			}
 		}
