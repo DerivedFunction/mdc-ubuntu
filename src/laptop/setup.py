@@ -21,7 +21,6 @@ setup(
         "console_scripts": [
             "input_node = laptop.input:main",
             "listener = laptop.listener:main",
-            "velocity_to_controller = laptop.velocity_to_controller:main",
         ],
     },
 )
