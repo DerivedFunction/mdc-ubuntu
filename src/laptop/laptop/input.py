@@ -26,8 +26,8 @@ class Input(Node):
     def controller_callback(self):
         msg = Twist()
 
-        msg.linear.x = 0.0 # Velocity in x (m/s)
-        msg.angular.z = 0.0 # Angle of rotation in z (rad/s)
+        msg.linear.x = 0.0  # Velocity in x (m/s)
+        msg.angular.z = 0.0  # Angle of rotation in z (rad/s)
 
         axis, buttons = self.input_device.read_input()
 
@@ -55,17 +55,17 @@ class Input(Node):
         else:
             self.drive = float((up - down))
             self.steer = float((right - left))
-        
-        msg.linear.x = self.drive # Velocity in x (m/s)
-        msg.angular.z = self.steer # Angle of rotation in z (rad/s)
-        
+
+        msg.linear.x = self.drive  # Velocity in x (m/s)
+        msg.angular.z = self.steer  # Angle of rotation in z (rad/s)
+
         self.publisher_.publish(msg)
         self.get_logger().info(f'[{msg.linear.x}, {msg.angular.z}]')
 
     def quit(self):
         msg = Twist()
-        msg.linear.x = 0.0 # Velocity in x (m/s)
-        msg.angular.z = 0.0 # Angle of rotation in z (rad/s)
+        msg.linear.x = 0.0  # Velocity in x (m/s)
+        msg.angular.z = 0.0  # Angle of rotation in z (rad/s)
 
         self.publisher_.publish(msg)
         self.get_logger().info(f'[{msg.linear.x}, {msg.angular.z}]')
@@ -79,7 +79,7 @@ def main(args=None):
         input_type = 'keyboard'
         if len(sys.argv) >= 2 and sys.argv[1] in ['keyboard', 'controller']:
             input_type = sys.argv[1]
-                
+
         input_node = Input(input_type)
 
         rclpy.spin(input_node)
