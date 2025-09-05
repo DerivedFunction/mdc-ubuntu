@@ -13,13 +13,23 @@ source install/setup.bash
 # std_msgs: Standard ROS Messages including common message types representing primitive data types
 #           and other basic message constructs, such as multiarrays.
 # geometry_msgs: provides messages for common geometric primitives such as points, vectors, and poses
-if [[ "$1" == "build" ]]; then
+if [[ "$1" == "b" ]]; then
   echo "Building package 'laptop'..."
   colcon build --packages-select laptop
 fi
 
 # Run from laptop's package controller: laptop_controller.py's main function
-ros2 run laptop input_node controller
+if [[ "$1" == "r" ]]; then
+  if [[ "$2" == "k" ]]; then
+    ros2 run laptop input_node keyboard
+  fi
+
+  if [[ "$2" == "c" ]]; then
+    ros2 run laptop input_node controller
+  fi
+fi
+
+
 
 # Connect to the capstone project device (if needed)
 # ssh capstone@capstone-nx.local controller
