@@ -22,6 +22,9 @@ Together, these packages allow sensor input from the Kinect and user input from 
   - `launch.sh` → Launches Azure Kinect
   - `runcar.sh` → Runs the full car control system  
   -  `xbox.sh` → Runs the car xbox controller  
+  - `send-db.sh` → Send rtabmap data to the car
+  - `deploy.sh` → Send the git repo when connected via ssh. NOTE: move the db to a different location with `move-db.sh`
+  - `move-db.sh` → Move the `db` with `m` or restore with `r`
 
 ---
 
@@ -49,7 +52,7 @@ Start the full pipeline:
 
 ```bash
 ./runcar.sh # In the car
-./xbox.sh # On the laptop
+./xbox.sh r k # On the laptop run keyboard (or c for laptop)
 ./launch.sh # In a separate terminal where the Kinect is connected
 ```
 

@@ -1,0 +1,4 @@
+[wsl2]
+memory=10GB        # Give almost all RAM to WSL2 (Update this based on ~80% free RAM)
+processors=8       # Half your logical CPUs (can go up to 12 if needed)
+swap=8GB           # Swap space, helps with Kinect SDK buffer allocations

@@ -11,6 +11,9 @@ if not dbname:
 if not dbname.endswith(".db"):
     dbname += ".db"
 deleteDB = input("Delete original db? (y/n): ").strip().lower() == "y"
+reuseDB = False
+if not deleteDB:  # Only ask if not deleting
+    reuseDB = input("Reuse existing db for additional mapping? (y/n): ").strip().lower() == "y"
 
 def generate_launch_description():
 
@@ -68,9 +71,12 @@ def generate_launch_description():
         ('depth/image', '/depth_to_rgb/image_raw')
     ]
     
-    rtabmap_args =[]
+    rtabmap_args = []
     if deleteDB:
         rtabmap_args.append('--delete_db_on_start')
+    elif reuseDB:
+        rtabmap_args.append('--incremental_mapping')  # continue mapping on existing DB
+        
     return LaunchDescription([
 
         # Environment variables for USB stability under WSL2 + Docker
