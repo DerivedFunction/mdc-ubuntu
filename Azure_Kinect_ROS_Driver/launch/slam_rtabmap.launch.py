@@ -28,13 +28,11 @@ def generate_launch_description():
     rviz_config_file = os.path.join(rtabmap_ros_pkg_dir, 'launch', 'config', 'rgbd.rviz')
 
     # Figure out repo root (two levels up from build/) and save it
-    save_location = os.path.abspath(os.path.join(azure_kinect_ros_driver_pkg_dir, '../../../../../.rtabmap_data'))
+    save_location = os.path.abspath(os.path.join(azure_kinect_ros_driver_pkg_dir, '../../../../../rtabmap_data'))
     default_db_path = os.path.join(save_location, dbname)
     
     # Declare launch arguments
     use_sim_time = LaunchConfiguration('use_sim_time')
-
-    db_path = LaunchConfiguration('db_path')
     
     # Define parameters for RTAB-Map nodes
     rtabmap_parameters = {
