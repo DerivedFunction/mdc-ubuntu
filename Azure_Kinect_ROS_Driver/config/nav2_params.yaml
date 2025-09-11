@@ -1,0 +1,74 @@
+amcl:  # not used because RTAB-Map handles localization
+  ros__parameters:
+    use_sim_time: false
+
+map_server:  # we don't need static map_server, RTAB-Map publishes /map
+  ros__parameters:
+    yaml_filename: ""   # leave empty
+    use_sim_time: false
+
+bt_navigator:
+  ros__parameters:
+    use_sim_time: false
+    default_bt_xml_filename: "navigate_w_replanning_and_recovery.xml"
+
+controller_server:
+  ros__parameters:
+    use_sim_time: false
+    controller_plugins: ["FollowPath"]
+    FollowPath:
+      plugin: "dwb_core::DWBLocalPlanner"
+
+planner_server:
+  ros__parameters:
+    use_sim_time: false
+    planner_plugins: ["GridBased"]
+    GridBased:
+      plugin: "nav2_navfn_planner/NavfnPlanner"
+
+# Costmaps
+global_costmap:
+  ros__parameters:
+    global_frame: map
+    robot_base_frame: base_link
+    use_sim_time: false
+    rolling_window: false
+    plugins: ["static_layer", "obstacle_layer", "inflation_layer"]
+
+    static_layer:
+      map_subscribe_transient_local: true
+
+    obstacle_layer:
+      observation_sources: scan
+      scan:
+        topic: /scan
+        sensor_frame: camera_base
+        data_type: LaserScan
+        marking: true
+        clearing: true
+
+    inflation_layer:
+      inflation_radius: 0.5
+
+local_costmap:
+  ros__parameters:
+    global_frame: odom
+    robot_base_frame: base_link
+    use_sim_time: false
+    rolling_window: true
+    width: 3.0
+    height: 3.0
+    resolution: 0.05
+    plugins: ["obstacle_layer", "inflation_layer"]
+
+    obstacle_layer:
+      observation_sources: scan
+      scan:
+        topic: /scan
+        sensor_frame: camera_base
+        data_type: LaserScan
+        marking: true
+        clearing: true
+
+    inflation_layer:
+      inflation_radius: 0.5
