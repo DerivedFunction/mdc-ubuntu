@@ -90,10 +90,8 @@ RUN sudo apt update && \
 COPY 99-pololu.rules /etc/udev/rules.d/99-pololu.rules
 RUN wget https://www.pololu.com/file/0J315/maestro-linux-241004.tar.gz
 RUN tar -xzvf maestro-linux-241004.tar.gz
-RUN rm maestro-linux-241004.tar.gz
 RUN apt-get install -y mono-runtime libmono-system-windows-forms4.0-cil
-COPY MSC_config maestro-linux/MSC_config
-RUN cd maestro-linux && ./UscCmd --config MSC_config
+COPY MSC_config /maestro-linux/MSC_config
 
 # Install VIM and vim-plug
 RUN apt install vim -y
@@ -104,4 +102,8 @@ RUN curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 COPY .vimrc /root/
 RUN vim +PlugInstall +q +q
 RUN echo "source /opt/ros/humble/setup.bash" >> /root/.bashrc
+
+# Clean up .deb files
+RUN rm *.deb
+
 
