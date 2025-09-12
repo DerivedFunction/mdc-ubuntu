@@ -81,3 +81,7 @@ This will:
 * Xbox controller (wired or wireless via dongle)
 * Configuration and Setup in the `devcontainer`
 ---
+
+## WSL 2
+In Powershell with administrative privileges, you must copy and paste `attach-devices.ps1` to allow Docker/WSL2 to access USB connected devices.
+
