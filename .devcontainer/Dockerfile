@@ -91,7 +91,7 @@ COPY 99-pololu.rules /etc/udev/rules.d/99-pololu.rules
 RUN wget https://www.pololu.com/file/0J315/maestro-linux-241004.tar.gz
 RUN tar -xzvf maestro-linux-241004.tar.gz
 RUN rm maestro-linux-241004.tar.gz
-RUN apt-get install mono-runtime libmono-system-windows-forms4.0-cil
+RUN apt-get install -y mono-runtime libmono-system-windows-forms4.0-cil
 
 # Install VIM and vim-plug
 RUN apt install vim -y
