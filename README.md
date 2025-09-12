@@ -83,5 +83,4 @@ This will:
 ---
 
 ## WSL 2
-In Powershell with administrative privileges, you must copy and paste `attach-devices.ps1` to allow Docker/WSL2 to access USB connected devices.
-
+In Powershell with administrative privileges, you must copy and paste `attach-devices.ps1` to allow Docker/WSL2 to access USB connected devices. You may need to add a `.wslconfig` in  `C:\Users\_name_` increase allowed usage (https://learn.microsoft.com/en-us/windows/wsl/wsl-config).
