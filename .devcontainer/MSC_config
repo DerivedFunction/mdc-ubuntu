@@ -1,0 +1,57 @@
+<!--Pololu Maestro servo controller settings file, http://www.pololu.com/catalog/product/1350-->
+<!--
+ "Neutral": Position at which the target/speed is 0
+ "Speed": Acceleration of Motor. 0 = instant acceleration
+ "Acceleration": Jerk of the motor. 0 = constant acceleration
+ Max: Hard limit is max vs neutral + Range
+ Min: Hard limit is min vs neutral - Range
+-->
+
+<!--
+  ./UscCmd --list                         List available devices
+  ./UscCmd --speed channel_num,speed      Set the speed of channel_num
+  ./UscCmd --accel channel_num,speed      Set the acceleration of channel_num
+  ./UscCmd --servo channel_num,target     Set the target of channel_num
+  ./UscCmd config FILE                    Sets up communication to allow the car to work
+-->
+<UscSettings version="1">
+  <NeverSuspend>false</NeverSuspend>
+  <SerialMode>USB_DUAL_PORT</SerialMode>
+  <FixedBaudRate>9600</FixedBaudRate>
+  <SerialTimeout>0</SerialTimeout>
+  <EnableCrc>false</EnableCrc>
+  <SerialDeviceNumber>12</SerialDeviceNumber>
+  <SerialMiniSscOffset>0</SerialMiniSscOffset>
+  <Channels ServosAvailable="6" ServoPeriod="156">
+    <!--Period = 19.968 ms-->
+    <!--Channel 0: Drive 
+        Weightless: 
+        6173: Minimum Forward Target (requires initial force to start spinning)
+        5732: Minimum Backward Target (requires initial force to start spinning)
+        5953: Middle Value (avg)
+        Range: We don't want it to go too fast
+        With weight:
+        6200: Minimum Forward Target
+        5640: Minimum Backward Target
+    -->
+    <Channel name="" mode="Servo" min="3000" max="8000" homemode="Off" home="0" speed="0" acceleration="0" neutral="6000" range="5000" />
+    <!--Channel 1: Steering
+        Track: are 0.2413 m
+        Wheelbase: 0.3556 m
+        5800: "Neutral target"/Straight (avg) calibrated
+        Minimum (Arbitrary Limit): 4400 (Full Left) 22.5 deg
+        Maximum (Arbitrary Limit): 7600 (Full Right) 22.5 deg
+    -->
+    <Channel name="" mode="Servo" min="4400" max="7800" homemode="Ignore" home="0" speed="0" acceleration="0" neutral="5800" range="1700" />
+    <!--Channel 2-->
+    <Channel name="" mode="Servo" min="4000" max="8000" homemode="Off" home="0" speed="0" acceleration="0" neutral="6100" range="4000" />
+    <!--Channel 3-->
+    <Channel name="" mode="Servo" min="3968" max="8000" homemode="Off" home="0" speed="0" acceleration="0" neutral="6000" range="1905" />
+    <!--Channel 4-->
+    <Channel name="" mode="Servo" min="3968" max="8000" homemode="Off" home="0" speed="0" acceleration="0" neutral="6000" range="1905" />
+    <!--Channel 5-->
+    <Channel name="" mode="Servo" min="3968" max="8000" homemode="Off" home="0" speed="0" acceleration="0" neutral="6000" range="1905" />
+  </Channels>
+  <Sequences />
+  <Script ScriptDone="true" />
+</UscSettings>
