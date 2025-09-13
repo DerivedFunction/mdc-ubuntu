@@ -74,6 +74,9 @@ This will:
 
 ---
 
+## System Diagram
+![](./Chart/System%20Flow.svg)
+
 ## 📌 Requirements
 
 * ROS 2 Humble
