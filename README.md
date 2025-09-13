@@ -16,7 +16,7 @@ Together, these packages allow sensor input from the Kinect and user input from 
 - `laptop/` → ROS 2 node for Xbox controller input  
 - `mdc_car/` → ROS 2 node that controls the car  
 - `src/` → Source code for `laptop` and `mdc_car` packages  
-- `*.sh` → Convenience scripts for building and running the system  
+- `scripts/*.sh` → Convenience scripts for building and running the system  
   - `initAzure.sh` → Setup for Azure Kinect driver  
   - `initMDC.sh` → Setup for car controller  
   - `launch.sh` → Launches Azure Kinect
@@ -42,8 +42,8 @@ cd <repo-name>
 Instead of running `colcon build` manually, use the provided scripts:
 
 ```bash
-./initAzure.sh   # Build and setup Azure Kinect driver
-./initMDC.sh     # Build and setup car controller
+./scripts/initAzure.sh   # Build and setup Azure Kinect driver
+./scripts/initMDC.sh     # Build and setup car controller
 ```
 
 ### 3. Run the system
@@ -51,9 +51,9 @@ Instead of running `colcon build` manually, use the provided scripts:
 Start the full pipeline:
 
 ```bash
-./runcar.sh # In the car
-./xbox.sh r k # On the laptop run keyboard (or c for laptop)
-./launch.sh # In a separate terminal where the Kinect is connected
+./scripts/runcar.sh # In the car
+./scripts/xbox.sh r k # On the laptop run keyboard (or c for laptop)
+./scripts/launch.sh # In a separate terminal where the Kinect is connected
 ```
 
 This will:
