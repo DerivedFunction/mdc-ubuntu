@@ -18,13 +18,14 @@ rtabmap_ros_pkg_dir = get_package_share_directory('rtabmap_ros')
 nav2_ros_pkg_dir = get_package_share_directory('nav2_bringup')
 
 urdf_file_path = os.path.join(azure_kinect_ros_driver_pkg_dir, 'urdf', 'azure_kinect.urdf.xacro')
-rviz_config_file = os.path.abspath(os.path.join(azure_kinect_ros_driver_pkg_dir, '../../../../config/rtabmap_slam.rviz'))
+rviz_config_file = os.path.join(os.getcwd(), "config", "rtabmap_slam.rviz")
 
-save_location = os.path.abspath(os.path.join(azure_kinect_ros_driver_pkg_dir, '../../../../../rtabmap_data'))
+
+save_location = os.path.join(os.getcwd(), "rtabmap_data")
 default_db_path = os.path.join(save_location, dbname)
 
 # Default nav2 params YAML inside this package's config folder
-default_nav2_params = os.path.abspath(os.path.join(azure_kinect_ros_driver_pkg_dir, '../../../../config/nav2_params.yaml'))
+default_nav2_params = os.path.join(os.getcwd(), "config", "nav2_params.yaml")
 
 # nodes that lifecycle manager will manage
 lifecycle_nodes = [

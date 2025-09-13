@@ -22,9 +22,9 @@ azure_kinect_ros_driver_pkg_dir = get_package_share_directory('azure_kinect_ros_
 rtabmap_ros_pkg_dir = get_package_share_directory('rtabmap_ros')
 
 urdf_file_path = os.path.join(azure_kinect_ros_driver_pkg_dir, 'urdf', 'azure_kinect.urdf.xacro')
-rviz_config_file = os.path.abspath(os.path.join(azure_kinect_ros_driver_pkg_dir, '../../../../config/rtabmap_slam.rviz'))
+rviz_config_file = os.path.join(os.getcwd(), "config", "rtabmap_slam.rviz")
 
-save_location = os.path.abspath(os.path.join(azure_kinect_ros_driver_pkg_dir, '../../../../../rtabmap_data'))
+save_location = os.path.join(os.getcwd(), "rtabmap_data")
 default_db_path = os.path.join(save_location, dbname)
 
 # --- Base parameters for RTAB-Map ---
