@@ -29,30 +29,33 @@ default_db_path = os.path.join(save_location, dbname)
 
 # --- Base parameters for RTAB-Map ---
 rtabmap_parameters = {
-    'frame_id': 'camera_base',
-    'subscribe_depth': True,
-    'subscribe_rgb': True,
-    'use_sim_time': LaunchConfiguration('use_sim_time'),
-    'approx_sync': True,
-    'approx_sync_max_interval': 0.04,
-
+    "frame_id": "camera_base",
+    "subscribe_depth": True,
+    "subscribe_rgb": True,
+    "use_sim_time": LaunchConfiguration("use_sim_time"),
+    "approx_sync": True,
+    "approx_sync_max_interval": 0.04,
     # QoS settings: 2 = SensorDataQoS
-    'qos_image': 2,
-    'qos_imu': 2,
-
+    "qos_image": 2,
+    "qos_imu": 2,
     # ODOMETRY PARAMETERS
-    'Reg/Strategy': '0',          # Visual Odometry
-    'Odom/Strategy': '0',         # Frame-to-Frame tracking
-    'Vis/MinInliers': '15',
-    'Odom/ResetCountdown': '10',
-    'Vis/FeatureType': '8',       # ORB
-    'OdomF2M/MaxSize': '1000',
-
+    "Reg/Strategy": "0",  # Visual Odometry
+    "Odom/Strategy": "0",  # Frame-to-Frame tracking
+    "Vis/MinInliers": "15",
+    "Odom/ResetCountdown": "10",
+    "Vis/FeatureType": "8",  # ORB
+    "OdomF2M/MaxSize": "1000",
     # LOOP CLOSURE & MAPPING
-    'Grid/FromDepth': 'true',
-    'Reg/Force3DoF': 'true',
-    'Grid/RangeMax': '5.0',
-    'database_path': default_db_path
+    "Grid/FromDepth": "true",
+    "Reg/Force3DoF": "true",
+    "Grid/RangeMax": "5.0",
+    "database_path": default_db_path,
+    # Obstacle detection and raytracing
+    "Grid/MinGroundHeight": "-0.25",
+    "Grid/MaxGroundHeight": "0.05",
+    "Grid/MaxObstacleHeight": "0.5",
+    "Grid/RayTracing": "true",
+    "Grid/MapFrameProjection": "true",
 }
 
 # --- Remapping Kinect topics to RTAB-Map ---
