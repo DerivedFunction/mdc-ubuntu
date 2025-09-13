@@ -58,8 +58,8 @@ The result can be loaded into Nav2 (ROS2) using `map_server` for navigation.
 ```bash
 rtabmap-reprocess \
   --Grid/MinGroundHeight -0.25 \
-  --Grid/MaxGroundHeight 0.25 \
-  --Grid/MaxObstacleHeight 0.25 \
+  --Grid/MaxGroundHeight 0.05 \
+  --Grid/MaxObstacleHeight 0.5 \
   --Grid/DepthDecimation 1 \
   --Grid/RayTracing true \
   --Grid/MapFrameProjection true \
