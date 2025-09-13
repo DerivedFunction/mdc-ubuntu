@@ -1,5 +1,6 @@
-source install/setup.bash
 # export DISPLAY=:0
+cd Azure_Kinect_ROS_Driver
+source install/setup.bash
 if [[ "$1" == "m" ]]; then
     ros2 launch launch/slam_rtabmap.launch.py
 else
