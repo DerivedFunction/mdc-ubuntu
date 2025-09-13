@@ -1,0 +1,80 @@
+---
+config:
+  layout: dagre
+---
+flowchart TD
+ subgraph U["User / Laptop"]
+        UA["RViz / GUI"]
+        UB["Xbox Controller"]
+        UC["Keyboard"]
+  end
+ subgraph O1["Azure Kinect DK Camera"]
+        O1A["rgb/image_raw"]
+        O1A2["/rgb/image_raw"]
+        O1B["rgb/camera_info"]
+        O1B2["/rgb/camera_info"]
+        O1C["depth_to_rgb/image_raw"]
+        O1C2["/depth_to_rgb/image_raw"]
+  end
+ subgraph O2["RTAB-Map"]
+        O2A["rtabmap_odom (rgbd_odometry)"]
+        O2B["rtabmap (rtabmap core)"]
+        O5["Topics"]
+  end
+ subgraph O5["Topics"]
+        O5A["/map"]
+        O5B["/odom"]
+        O5C["/cloud_obstacles"]
+  end
+ subgraph O3D["Nav2 Remappings"]
+        O3D1["/cmd_vel"]
+        O3D2["/input_node"]
+  end
+ subgraph O3["Nav2 Stack"]
+        O3A["bt_navigator"]
+        O3B["Planner Server"]
+        O3C["Controller Server (DWB / RPP)"]
+        O3D
+  end
+ subgraph O4["MDC Servo Control"]
+        O4A["/input_node"]
+        O4B["Maestro Servo Controller"]
+        O4C["MDC Steering + Throttle"]
+  end
+ subgraph O["Orin NX"]
+        O2
+        O3
+        O4
+  end
+    O1A --> O1A2
+    O1B --> O1B2
+    O1C --> O1C2
+    UA L_UA_O3A_0@-. Goal Pose (PoseStamped) .-> O3A
+    O3A --> O3B
+    O3B --> O3C
+    O3C --> O3D
+    O3D1 --> O3D2
+    O1 L_O1B2_O2A_0@--> O2A
+    O2A --> O2B
+    O2B --> O5
+    O3D L_O3D_O4A_0@-.-> O4A
+    O4A --> O4B
+    O4B --> O4C
+    O3A -. Loop until Goal Reached .-> O2A
+    UB L_UB_O4_0@-.-> O4A
+    UC L_UC_O4_0@-.-> O4A
+    O5 L_O5_UA_0@--> UA & O3
+    style O5 fill:#FFCDD2,stroke:#D50000
+    style O3D stroke:#AA00FF,fill:#E1BEE7
+    style O2 fill:#FFCDD2
+    style O3 fill:#E1BEE7
+    style O4 fill:#FFE0B2
+    style O1 fill:#BBDEFB
+    style O fill:#C8E6C9
+    L_UA_O3A_0@{ animation: fast } 
+    L_O1B2_O2A_0@{ animation: fast } 
+    L_O3D_O4A_0@{ animation: fast } 
+    L_UB_O4_0@{ animation: fast } 
+    L_UC_O4_0@{ animation: fast } 
+    L_O5_UA_0@{ animation: fast } 
+    L_O5_O3_0@{ animation: fast }
