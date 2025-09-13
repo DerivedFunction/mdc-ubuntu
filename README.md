@@ -3,7 +3,7 @@
 This repository integrates the **Azure Kinect camera** with **ROS 2** using the [`Azure_Kinect_ROS_Driver`](https://github.com/microsoft/Azure_Kinect_ROS_Driver) and connects it with two control packages:
 
 - **Azure_Kinect_ROS_Driver** → Starts the Azure Kinect camera node in ROS 2  
-- **laptop** → Interfaces with an Xbox controller  
+- **laptop** → Interfaces with an Xbox controller or keyboard
 - **mdc_car** → Runs and controls the vehicle  
 
 Together, these packages allow sensor input from the Kinect and user input from the controller to drive the car through ROS 2.
@@ -21,7 +21,7 @@ Together, these packages allow sensor input from the Kinect and user input from 
   - `initMDC.sh` → Setup for car controller  
   - `launch.sh` → Launches Azure Kinect
   - `runcar.sh` → Runs the full car control system  
-  -  `xbox.sh` → Runs the car xbox controller  
+  -  `xbox.sh` → Runs the car xbox controller or keyboard
   - `send-db.sh` → Send rtabmap data to the car
   - `deploy.sh` → Send the git repo when connected via ssh. NOTE: move the db to a different location with `move-db.sh`
   - `move-db.sh` → Move the `db` with `m` or restore with `r`
