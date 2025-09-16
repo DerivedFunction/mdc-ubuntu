@@ -7,16 +7,16 @@ print_help() {
 Usage: $0 [options] [args]
 
 Options:
-  -s [db]        Launch RTABMAP (optional db arg, e.g. wb -> wb.db)
-  -n [config]    Launch NAV2 (optional config file)
+  -s [args]      Launch RTABMAP (optional args)
+  -n [args]      Launch NAV2 (optional config file)
   -K [args]      Launch Kinect only (optional args)
-  -r [rviz_cfg]  Launch RViz (optional config file)
+  -r [args]      Launch RViz (optional config file)
   -h, --help     Show this help message
 
 Examples:
-  $0                 Launch everything (default if no args)
-  $0 -s -n           Launch RTABMAP and NAV2 only
-  $0 -s wb           Launch RTABMAP with wb.db
+  $0                              Launch everything (default if no args)
+  $0 -s -n                        Launch RTABMAP and NAV2 only
+  $0 -s "db_name:=wb map:=false"  Launch RTABMAP with wb.db and no mapping
 EOF
 }
 
@@ -98,8 +98,8 @@ fi
 # --- Launch ---
 if $launch_rtabmap; then
   if [ -n "$rtabmap_args" ]; then
-    echo "Launching RTABMAP with db: ${rtabmap_args}.db"
-    ros2 launch launch/rtabmap.launch.py db:=${rtabmap_args}.db &
+    echo "Launching RTABMAP with config: $rtabmap_args"
+    ros2 launch launch/rtabmap.launch.py $rtabmap_args &
   else
     echo "Launching RTABMAP..."
     ros2 launch launch/rtabmap.launch.py &
@@ -109,7 +109,7 @@ fi
 if $launch_nav2; then
   if [ -n "$nav2_args" ]; then
     echo "Launching NAV2 with config: $nav2_args"
-    ros2 launch launch/nav2.launch.py params:=$nav2_args &
+    ros2 launch launch/nav2.launch.py $nav2_args &
   else
     echo "Launching NAV2..."
     ros2 launch launch/nav2.launch.py &
@@ -117,25 +117,25 @@ if $launch_nav2; then
 fi
 
 if $launch_kinect; then
-  echo "Launching Kinect... ${kinect_args:+(args: $kinect_args)}"
+  echo "Launching Kinect with config: $kinect_args"
   cd Azure_Kinect_ROS_Driver
   source install/setup.bash
-  ros2 launch launch/kinect.launch.py ${kinect_args:+args:=$kinect_args} &
+  ros2 launch launch/kinect.launch.py $kinect_args &
   cd ..
 fi
 
 # --- RViz arguments ---
-rviz_args="config/rtabmap_slam.rviz"
+rviz_args="config:=config/rtabmap_slam.rviz"
 
 if $launch_nav2; then
   # Use Nav2 config if Nav2 is launched
-  rviz_args="config/nav2_slam.rviz"
+  rviz_args="config:=config/nav2_slam.rviz"
 fi
 
 if $launch_rviz; then
   if [ -n "$rviz_args" ]; then
     echo "Launching RViz with config: $rviz_args"
-    ros2 launch launch/rviz2.launch.py config:=$rviz_args &
+    ros2 launch launch/rviz2.launch.py $rviz_args &
   else
     echo "Launching RViz with default config (rtabmap_slam.rviz)..."
     ros2 launch launch/rviz2.launch.py &

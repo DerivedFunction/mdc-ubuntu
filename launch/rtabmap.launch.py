@@ -38,7 +38,7 @@ rtabmap_parameters = {
     "Grid/RayTracing": "true",
     "Grid/MapFrameProjection": "true",
     # Reuse local map
-    "Mem/IncrementalMemory": "false",
+    # "Mem/IncrementalMemory": "false",
 }
 
 # --- Remapping Kinect topics to RTAB-Map ---
@@ -67,21 +67,34 @@ def generate_launch_description():
             description="Database filename (will be stored in rtabmap_data/)",
         )
     )
+    ld.add_action(
+        DeclareLaunchArgument(
+            "map",
+            default_value="false",
+            description="Continue to map or not (localization only if false)",
+        )
+    )
 
     # Compose full db_path from db_name
-    def set_db_path(context, *args, **kwargs):
+    def set_args(context, *args, **kwargs):
         db_name = LaunchConfiguration("db_name").perform(context)
         if not db_name.endswith(".db"):
             db_name += ".db"
         db_path = os.path.join(save_location, db_name)
+        rtabmap_parameters["Mem/IncrementalMemory"] = (
+            "false"
+            if (LaunchConfiguration("map").perform(context).lower() == "false")
+            else "true"
+        )
+        print(context)
         return [DeclareLaunchArgument("db_path", default_value=db_path)]
 
-    ld.add_action(OpaqueFunction(function=set_db_path))
+    ld.add_action(OpaqueFunction(function=set_args))
 
     ld.add_action(
         DeclareLaunchArgument(
             "use_respawn",
-            default_value="False",
+            default_value="false",
             description="Whether to respawn if a node crashes. Applied when composition is disabled.",
         )
     )
