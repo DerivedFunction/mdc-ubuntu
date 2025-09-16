@@ -19,7 +19,7 @@ Together, these packages allow sensor input from the Kinect and user input from 
 - `scripts/*.sh` → Convenience scripts for building and running the system  
   - `initAzure.sh` → Setup for Azure Kinect driver  
   - `initMDC.sh` → Setup for car controller  
-  - `launch.sh` → Launches Azure Kinect
+  - `launch-old.sh` → Launches Azure Kinect
   - `runcar.sh` → Runs the full car control system  
   -  `xbox.sh` → Runs the car xbox controller or keyboard
   - `send-db.sh` → Send rtabmap data to the car
