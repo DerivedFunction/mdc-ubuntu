@@ -50,6 +50,10 @@ EOF
 ############################################################
 }
 
+kill_all(){
+  
+}
+PIDS=() # array to hold processes
 # --- Logging setup ---
 mkdir -p logs
 LOGFILE="logs/launch_$(date +'%Y-%m-%d_%H-%M-%S').log"
@@ -130,9 +134,11 @@ if $launch_rtabmap; then
   if [ -n "$rtabmap_args" ]; then
     echo "Launching RTABMAP with config: $rtabmap_args"
     ros2 launch launch/rtabmap.launch.py $rtabmap_args &
+    PIDS+=($!)
   else
     echo "Launching RTABMAP..."
     ros2 launch launch/rtabmap.launch.py &
+    PIDS+=($!)
   fi
 fi
 
@@ -140,9 +146,11 @@ if $launch_nav2; then
   if [ -n "$nav2_args" ]; then
     echo "Launching NAV2 with config: $nav2_args"
     ros2 launch launch/nav2.launch.py $nav2_args &
+    PIDS+=($!)
   else
     echo "Launching NAV2..."
     ros2 launch launch/nav2.launch.py &
+    PIDS+=($!)
   fi
 fi
 
@@ -151,12 +159,14 @@ if $launch_kinect; then
   cd Azure_Kinect_ROS_Driver
   source install/setup.bash
   ros2 launch launch/kinect.launch.py $kinect_args &
+  PIDS+=($!)
   cd ..
 fi
 
 # --- RViz arguments ---
-rviz_args="config:=config/rtabmap_slam.rviz"
-
+if $launch_rtabmap; then
+  rviz_args="config:=config/rtabmap_slam.rviz"
+fi
 if $launch_nav2; then
   # Use Nav2 config if Nav2 is launched
   rviz_args="config:=config/nav2_slam.rviz"
@@ -166,8 +176,10 @@ if $launch_rviz; then
   if [ -n "$rviz_args" ]; then
     echo "Launching RViz with config: $rviz_args"
     ros2 launch launch/rviz2.launch.py $rviz_args &
+    PIDS+=($!)
   else
     echo "Launching RViz with default config (rtabmap_slam.rviz)..."
     ros2 launch launch/rviz2.launch.py &
+    PIDS+=($!)
   fi
 fi
