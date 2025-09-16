@@ -38,7 +38,7 @@ RUN apt-get update && apt-get install -y ros-humble-xacro \
     ros-humble-joint-state-publisher \
     ros-humble-joint-state-publisher-gui \
     ros-humble-rtabmap-ros \
-    ros-humble-navigation2
+    ros-humble-navigation2 \
     ros-humble-nav2-bringup
 
 
