@@ -73,8 +73,46 @@ This will:
   * This makes it easier to get started on a fresh machine, but it is not required at runtime.
 * Scripts in the root directory are the main entry points for building and running.
 
----
+### X11 Forwarding
+```sh
+# On server side (ORIN NX):
+# Make sure xauth is installed
+# Open a text editor with sudo privileges to edit /etc/ssh/sshd_config
+sudo vim /etc/ssh/sshd_config
+```
+* Uncomment `ForwardX11`
+* Uncomment `X11DisplayOffset 10`
+* Uncomment `X11Forwarding yes`
+* Uncomment `Port 22`
+```sh
+# Run this command to restart
+sudo systemctl restart sshd
 
+# On client side:
+Add ForwardX11 yes to ~/.ssh/config
+
+# Run this to use X11 Forwarding:
+# ssh -X capstone@mdc-nx.local
+ssh -X nx
+```
+---
+### Expired ROS2 GPG Key
+```sh
+# Remove the old key
+sudo apt-key del F42ED6FBAB17C654
+# Add the new key using curl and gpg
+sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo gpg --dearmor -o /usr/share/keyrings/ros-archive-keyring.gpg
+# Update the package list
+echo "deb [signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
+
+# Update the package list again
+sudo apt update
+```
+
+### Using a visual monitor
+If you are using a monitor connected to the Jetson, you may need to set the `xrandr -d :0` to get the correct display.
+
+```sh
 ## System Diagram
 ![](./Chart/System%20Flow.svg)
 
