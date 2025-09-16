@@ -54,7 +54,7 @@ Start the full pipeline:
 ```bash
 ./scripts/runcar.sh # In the car
 ./scripts/xbox.sh r k # On the laptop run keyboard (or c for laptop)
-./scripts/launch.sh m # In a separate terminal where the Kinect is connected to run mapping (m) or navigation
+./scripts/launch.sh # See the file for full options (No args run full stack)
 ```
 
 This will:
