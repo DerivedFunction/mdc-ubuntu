@@ -135,9 +135,9 @@ fi
 if $launch_rviz; then
   if [ -n "$rviz_args" ]; then
     echo "Launching RViz with config: $rviz_args"
-    ros2 launch launch/rviz.launch.py config:=$rviz_args &
+    ros2 launch launch/rviz2.launch.py config:=$rviz_args &
   else
     echo "Launching RViz with default config (rtabmap_slam.rviz)..."
-    ros2 launch launch/rviz.launch.py &
+    ros2 launch launch/rviz2.launch.py &
   fi
 fi
