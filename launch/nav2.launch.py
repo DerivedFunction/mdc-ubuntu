@@ -36,7 +36,7 @@ def generate_launch_description():
             description="Use simulation (Gazebo) clock if true",
         )
     )
-    
+
     ld.add_action(
         DeclareLaunchArgument(
             "autostart",
@@ -116,7 +116,7 @@ def generate_launch_description():
                     "--log-level",
                     LaunchConfiguration("log_level"),
                 ],
-                remappings=[("cmd_vel", "input_node")],
+                remappings=[("input_node", "cmd_vel")],
             )
         )
 

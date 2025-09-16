@@ -188,7 +188,7 @@ def generate_launch_description():
                     "--log-level",
                     LaunchConfiguration("log_level"),
                 ],
-                remappings=rtabmap_remapping + [("cmd_vel", "input_node")],
+                remappings=rtabmap_remapping + [("input_node", "cmd_vel")],
             )
         )
 
