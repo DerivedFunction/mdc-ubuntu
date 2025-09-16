@@ -49,10 +49,22 @@ EOF
 # For more details, see the project documentation.
 ############################################################
 }
-
-kill_all(){
-  
+# --- Function to kill all launched processes ---   
+kill_all() {
+  echo "Killing all launched ROS nodes..."
+  for pid in "${PIDS[@]}"; do
+    if kill -0 "$pid" 2>/dev/null; then
+      echo "Killing PID $pid"
+      kill "$pid"
+    fi
+  done
+  # Optionally wait for processes to exit
+  wait
+  echo "All processes terminated."
 }
+# Catch SIGINT and SIGTERM to kill all processes
+trap kill_all SIGINT SIGTERM
+
 PIDS=() # array to hold processes
 # --- Logging setup ---
 mkdir -p logs
