@@ -18,7 +18,7 @@ rtabmap_ros_pkg_dir = get_package_share_directory('rtabmap_ros')
 nav2_ros_pkg_dir = get_package_share_directory('nav2_bringup')
 
 urdf_file_path = os.path.join(azure_kinect_ros_driver_pkg_dir, 'urdf', 'azure_kinect.urdf.xacro')
-rviz_config_file = os.path.join(os.getcwd(), "config", "rtabmap_slam.rviz")
+rviz_config_file = os.path.join(os.getcwd(), "config", "nav2_slam.rviz")
 
 
 save_location = os.path.join(os.getcwd(), "rtabmap_data")
