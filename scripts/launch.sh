@@ -18,6 +18,36 @@ Examples:
   $0 -s -n                        Launch RTABMAP and NAV2 only
   $0 -s "db_name:=wb map:=false"  Launch RTABMAP with wb.db and no mapping
 EOF
+############################################################
+# README: Universal ROS2 Launch Script
+# ------------------------------------
+# This script launches various ROS2 nodes for the MDC project.
+#
+# Features:
+#   - Launch RTAB-Map SLAM, Navigation2, Kinect driver, and RViz individually or together
+#   - Flexible argument parsing for custom configurations
+#   - Logging to timestamped files in ./logs
+#   - Usage examples and help included
+#
+# Usage:
+#   ./launch.sh [options] [args]
+#
+# Options:
+#   -s [args]      Launch RTABMAP (optional args)
+#   -n [args]      Launch NAV2 (optional config file)
+#   -K [args]      Launch Kinect only (optional args)
+#   -r [args]      Launch RViz (optional config file)
+#   -h, --help     Show help message
+#
+# Examples:
+#   ./launch.sh                      # Launch everything (default)
+#   ./launch.sh -s -n                # Launch RTABMAP and NAV2 only
+#   ./launch.sh -s "db_name:=wb map:=false"  # RTABMAP with wb.db, no mapping
+#
+# Log files are saved in ./logs/launch_<timestamp>.log
+#
+# For more details, see the project documentation.
+############################################################
 }
 
 # --- Logging setup ---
