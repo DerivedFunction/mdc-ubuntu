@@ -73,6 +73,28 @@ This will:
   * This makes it easier to get started on a fresh machine, but it is not required at runtime.
 * Scripts in the root directory are the main entry points for building and running.
 
+### X11 Forwarding
+```sh
+# On server side (ORIN NX):
+# Make sure xauth is installed
+# Open a text editor with sudo privileges to edit /etc/ssh/sshd_config
+sudo vim /etc/ssh/sshd_config
+```
+* Uncomment `ForwardX11`
+* Uncomment `X11DisplayOffset 10`
+* Uncomment `X11Forwarding yes`
+* Uncomment `Port 22`
+```sh
+# Run this command to restart
+sudo systemctl restart sshd
+
+# On client side:
+Add ForwardX11 yes to ~/.ssh/config
+
+# Run this to use X11 Forwarding:
+# ssh -X capstone@mdc-nx.local
+ssh -X nx
+```
 ---
 
 ## System Diagram
