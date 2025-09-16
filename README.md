@@ -17,11 +17,12 @@ Together, these packages allow sensor input from the Kinect and user input from 
 - `mdc_car/` → ROS 2 node that controls the car  
 - `src/` → Source code for `laptop` and `mdc_car` packages  
 - `scripts/*.sh` → Convenience scripts for building and running the system  
+  - `launch.sh` → Launch the nav2 + rtabmap stack.
   - `initAzure.sh` → Setup for Azure Kinect driver  
   - `initMDC.sh` → Setup for car controller  
-  - `launch-old.sh` → Launches Azure Kinect
+  - `launch-old.sh` → Launches Azure Kinect with rtabmap or nav2 + rtabmap
   - `runcar.sh` → Runs the full car control system  
-  -  `xbox.sh` → Runs the car xbox controller or keyboard
+  - `xbox.sh` → Runs the car xbox controller or keyboard
   - `send-db.sh` → Send rtabmap data to the car
   - `deploy.sh` → Send the git repo when connected via ssh. NOTE: move the db to a different location with `move-db.sh`
   - `move-db.sh` → Move the `db` with `m` or restore with `r`
