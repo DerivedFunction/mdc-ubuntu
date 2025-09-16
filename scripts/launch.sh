@@ -49,26 +49,30 @@ EOF
 # For more details, see the project documentation.
 ############################################################
 }
-# --- Function to kill all launched processes ---   
+
+# --- Function to kill all launched processes ---
 kill_all() {
   echo "Killing all launched ROS nodes..."
-  for pid in "${PIDS[@]}"; do
-    if kill -0 "$pid" 2>/dev/null; then
-      echo "Killing PID $pid"
-      kill "$pid"
-    fi
-  done
-  # Optionally wait for processes to exit
+  if [ -f "$PIDFILE" ]; then
+    while read -r pid; do
+      if kill -0 "$pid" 2>/dev/null; then
+        echo "Killing PID $pid"
+        kill "$pid"
+      fi
+    done < "$PIDFILE"
+    rm -f "$PIDFILE"
+  else
+    echo "No PID file found → nothing to kill."
+  fi
   wait
   echo "All processes terminated."
 }
-# Catch SIGINT and SIGTERM to kill all processes
-trap kill_all SIGINT SIGTERM
 
 PIDS=() # array to hold processes
 # --- Logging setup ---
 mkdir -p logs
 LOGFILE="logs/launch_$(date +'%Y-%m-%d_%H-%M-%S').log"
+PIDFILE="logs/launch_pids.log"
 echo "Logging to $LOGFILE"
 exec > >(tee -a "$LOGFILE") 2>&1
 
@@ -89,6 +93,9 @@ else
   # Parse
   while [[ $# -gt 0 ]]; do
     case "$1" in
+      kill)
+        kill_all
+        ;;
       -s)
         launch_rtabmap=true
         shift
@@ -147,10 +154,12 @@ if $launch_rtabmap; then
     echo "Launching RTABMAP with config: $rtabmap_args"
     ros2 launch launch/rtabmap.launch.py $rtabmap_args &
     PIDS+=($!)
+    echo $! >> "$PIDFILE"
   else
     echo "Launching RTABMAP..."
     ros2 launch launch/rtabmap.launch.py &
     PIDS+=($!)
+    echo $! >> "$PIDFILE"
   fi
 fi
 
@@ -159,10 +168,12 @@ if $launch_nav2; then
     echo "Launching NAV2 with config: $nav2_args"
     ros2 launch launch/nav2.launch.py $nav2_args &
     PIDS+=($!)
+    echo $! >> "$PIDFILE"
   else
     echo "Launching NAV2..."
     ros2 launch launch/nav2.launch.py &
     PIDS+=($!)
+    echo $! >> "$PIDFILE"
   fi
 fi
 
@@ -172,6 +183,7 @@ if $launch_kinect; then
   source install/setup.bash
   ros2 launch launch/kinect.launch.py $kinect_args &
   PIDS+=($!)
+    echo $! >> "$PIDFILE"
   cd ..
 fi
 
@@ -189,9 +201,11 @@ if $launch_rviz; then
     echo "Launching RViz with config: $rviz_args"
     ros2 launch launch/rviz2.launch.py $rviz_args &
     PIDS+=($!)
+    echo $! >> "$PIDFILE"
   else
     echo "Launching RViz with default config (rtabmap_slam.rviz)..."
     ros2 launch launch/rviz2.launch.py &
     PIDS+=($!)
+    echo $! >> "$PIDFILE"
   fi
 fi
