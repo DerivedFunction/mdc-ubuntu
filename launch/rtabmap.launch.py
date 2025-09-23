@@ -32,8 +32,8 @@ rtabmap_parameters = {
     "Grid/RangeMax": "5.0",
     "database_path": LaunchConfiguration("db_path"),  # <- now arg-driven
     # Obstacle detection and raytracing
-    "Grid/MinGroundHeight": "-0.25",
-    "Grid/MaxGroundHeight": "0.05",
+    #"Grid/MinGroundHeight": "-0.25",
+    #"Grid/MaxGroundHeight": "0.00",
     "Grid/MaxObstacleHeight": "0.5",
     "Grid/RayTracing": "true",
     "Grid/MapFrameProjection": "true",

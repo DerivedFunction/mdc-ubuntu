@@ -71,10 +71,10 @@ kill_all() {
 PIDS=() # array to hold processes
 # --- Logging setup ---
 mkdir -p logs
-LOGFILE="logs/launch_$(date +'%Y-%m-%d_%H-%M-%S').log"
+# LOGFILE="logs/launch_$(date +'%Y-%m-%d_%H-%M-%S').log"
 PIDFILE="logs/launch_pids.log"
 echo "Logging to $LOGFILE"
-exec > >(tee -a "$LOGFILE") 2>&1
+# exec > >(tee -a "$LOGFILE") 2>&1
 
 # Default launch flags + args
 launch_rtabmap=false; rtabmap_args=""

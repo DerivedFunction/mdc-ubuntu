@@ -37,7 +37,7 @@ def generate_launch_description():
     )
     ld.add_action(
         DeclareLaunchArgument(
-            "FPS", default_value="30", description="FPS set to 5, (default) 15, or 30"
+            "FPS", default_value="15", description="FPS set to 5, (default) 15, or 30"
         )
     )
 
