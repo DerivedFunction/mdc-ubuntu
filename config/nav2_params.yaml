@@ -1,7 +1,7 @@
 # rtabmap_demos: We add segmented ground and obstacles to voxel_layer of the local costmap and removed scan source.
 bt_navigator:
   ros__parameters:
-    use_sim_time: True                # Use simulation time if true
+    use_sim_time: true                # Use simulation time if true
     global_frame: map                 # Global reference frame for navigation
     robot_base_frame: camera_base     # Robot's base frame
     odom_topic: /odom                 # Odometry topic
@@ -63,15 +63,15 @@ bt_navigator:
 
 bt_navigator_navigate_through_poses_rclcpp_node:
   ros__parameters:
-    use_sim_time: True                # Use simulation time if true
+    use_sim_time: true                # Use simulation time if true
 
 bt_navigator_navigate_to_pose_rclcpp_node:
   ros__parameters:
-    use_sim_time: True                # Use simulation time if true
+    use_sim_time: true                # Use simulation time if true
 
 controller_server:
   ros__parameters:
-    use_sim_time: True                # Use simulation time if true
+    use_sim_time: true                # Use simulation time if true
     controller_frequency: 20.0        # Frequency to run the controller (Hz)
     min_x_velocity_threshold: 0.001   # Minimum x velocity to consider as moving
     min_y_velocity_threshold: 0.5     # Minimum y velocity to consider as moving
@@ -91,16 +91,16 @@ controller_server:
     #  plugin: "nav2_controller::SimpleGoalChecker"
     #  xy_goal_tolerance: 0.25
     #  yaw_goal_tolerance: 0.25
-    #  stateful: True
+    #  stateful: true
     general_goal_checker:
-      stateful: True                   # Keep state between checks
+      stateful: true                   # Keep state between checks
       plugin: "nav2_controller::SimpleGoalChecker" # Goal checker plugin
       xy_goal_tolerance: 0.25          # Position tolerance for reaching goal (m)
       yaw_goal_tolerance: 0.25         # Orientation tolerance for reaching goal (rad)
     # DWB parameters
     FollowPath:
       plugin: "dwb_core::DWBLocalPlanner" # Local planner plugin
-      debug_trajectory_details: True   # Output debug info for trajectories
+      debug_trajectory_details: true   # Output debug info for trajectories
       min_vel_x: 0.0                  # Minimum forward velocity (m/s)
       min_vel_y: 0.0                  # Minimum lateral velocity (m/s)
       max_vel_x: 1.0           # Maximum forward velocity (m/s)
@@ -127,8 +127,8 @@ controller_server:
       transform_tolerance: 0.2 # TF transform tolerance (s)
       xy_goal_tolerance: 0.25  # Position tolerance for goal (m)
       trans_stopped_velocity: 0.25 # Velocity to consider robot stopped (m/s)
-      short_circuit_trajectory_evaluation: True # Stop evaluating if a valid trajectory is found
-      stateful: True           # Keep state between runs
+      short_circuit_trajectory_evaluation: true # Stop evaluating if a valid trajectory is found
+      stateful: true           # Keep state between runs
       critics: ["RotateToGoal", "Oscillation", "BaseObstacle", "GoalAlign", "PathAlign", "PathDist", "GoalDist"] # List of trajectory critics
       BaseObstacle.scale: 0.02 # Obstacle critic scale
       PathAlign.scale: 32.0    # Path alignment critic scale
@@ -146,9 +146,9 @@ local_costmap:
     ros__parameters:
       update_frequency: 5.0           # Costmap update frequency (Hz)
       publish_frequency: 2.0          # Costmap publish frequency (Hz)
-      global_frame: map               # Global frame for costmap
+      global_frame: odom              # Global frame for costmap
       robot_base_frame: camera_base   # Robot's base frame
-      use_sim_time: True              # Use simulation time if true
+      use_sim_time: true              # Use simulation time if true
       rolling_window: true            # Use rolling window for local costmap
       width: 10                       # Width of local costmap (m)
       height: 10                      # Height of local costmap (m)
@@ -164,8 +164,8 @@ local_costmap:
           topic: /cloud_obstacles                # RTAB-Map’s obstacle cloud
           sensor_frame: camera_base              # Sensor frame for pointcloud
           data_type: PointCloud2                 # Data type for pointcloud
-          clearing: True                         # Enable clearing obstacles
-          marking: True                          # Enable marking obstacles
+          clearing: true                         # Enable clearing obstacles
+          marking: true                          # Enable marking obstacles
           max_obstacle_height: 0.5               # Max obstacle height (m)
           min_obstacle_height: 0.05              # Min obstacle height (m)
 
@@ -184,14 +184,14 @@ global_costmap:
       publish_frequency: 1.0          # Costmap publish frequency (Hz)
       global_frame: map               # Global frame for costmap
       robot_base_frame: camera_base   # Robot's base frame
-      use_sim_time: True              # Use simulation time if true
+      use_sim_time: true              # Use simulation time if true
       robot_radius: 0.22              # Robot radius (m)
       resolution: 0.05                # Resolution of costmap (m/cell)
       track_unknown_space: true       # Track unknown space in costmap
       plugins: ["static_layer", "inflation_layer", "obstacle_layer"] # Costmap plugins
       static_layer:
         plugin: "nav2_costmap_2d::StaticLayer" # Static layer plugin
-        map_subscribe_transient_local: True     # Use transient local QoS for map
+        map_subscribe_transient_local: true     # Use transient local QoS for map
         topic: /map                            # RTAB-Map’s occupancy grid
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer" # Inflation layer plugin
@@ -204,28 +204,28 @@ global_costmap:
           topic: /cloud_obstacles                # RTAB-Map’s obstacle cloud
           sensor_frame: camera_base              # Sensor frame for pointcloud
           data_type: PointCloud2                 # Data type for pointcloud
-          clearing: True                         # Enable clearing obstacles
-          marking: True                          # Enable marking obstacles
+          clearing: true                         # Enable clearing obstacles
+          marking: true                          # Enable marking obstacles
           max_obstacle_height: 0.5               # Max obstacle height (m)
           min_obstacle_height: 0.05              # Min obstacle height (m)
-      always_send_full_costmap: True           # Always send full costmap
+      always_send_full_costmap: true           # Always send full costmap
 
 # map_server:
 #   ros__parameters:
-#     use_sim_time: True
+#     use_sim_time: true
 #     # Overridden in launch by the "map" launch configuration or provided default value.
 #     # To use in yaml, remove the default "map" value in the tb3_simulation_launch.py file & provide full path to map below.
 #     yaml_filename: ""
 
 # smoother_server:
 #   ros__parameters:
-#     use_sim_time: True
+#     use_sim_time: true
 #     smoother_plugins: ["simple_smoother"]
 #     simple_smoother:
 #       plugin: "nav2_smoother::SimpleSmoother"
 #       tolerance: 1.0e-10
 #       max_its: 1000
-#       do_refinement: True
+#       do_refinement: true
 
 behavior_server:
   ros__parameters:
@@ -254,22 +254,22 @@ behavior_server:
 
 robot_state_publisher:
   ros__parameters:
-    use_sim_time: True                       # Use simulation time if true
+    use_sim_time: true                       # Use simulation time if true
 
 waypoint_follower:
   ros__parameters:
-    use_sim_time: True                                      # Use simulation time if true
+    use_sim_time: true                                      # Use simulation time if true
     loop_rate: 20                                           # Rate to process waypoints (Hz)
     stop_on_failure: false                                  # Stop following on failure
     waypoint_task_executor_plugin: "wait_at_waypoint"       # Plugin for waypoint execution
     wait_at_waypoint:
       plugin: "nav2_waypoint_follower::WaitAtWaypoint"      # Wait at waypoint plugin
-      enabled: True                                         # Enable wait at waypoint
+      enabled: true                                         # Enable wait at waypoint
       waypoint_pause_duration: 200                          # Pause duration at waypoint (ms)
 
 velocity_smoother:
   ros__parameters:
-    use_sim_time: True                  # Use simulation time if true
+    use_sim_time: true                  # Use simulation time if true
     smoothing_frequency: 20.0           # Frequency to smooth velocity commands (Hz)
     scale_velocities: False             # Scale velocities to limits
     feedback: "OPEN_LOOP"               # Feedback mode (OPEN_LOOP or CLOSED_LOOP)
