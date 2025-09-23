@@ -25,10 +25,16 @@ _STEER_RIGHT_RANGE = _STEER_RIGHT - _NEUTRAL_STEER_VALUE  # 1800
 # Physical constants
 _WHEELBASE_LENGTH = 0.3556  # Wheelbase in meters
 
+_DEFAULT_LIMIT = 0.25
+
+
 # Get user input with validation
 while True:
     try:
-        LIMIT = float(input("Enter top speed (m/s): "))  # Changed to float for finer control
+        speed_input = input("Enter top speed (m/s): ")
+        if speed_input == "":
+            print("No speed entered, using default of " + str(_DEFAULT_LIMIT))
+            LIMIT = _DEFAULT_LIMIT
         if LIMIT <= 0:
             print("Speed must be positive.")
             continue
