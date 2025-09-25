@@ -26,8 +26,7 @@ _STEER_RIGHT_RANGE = _STEER_RIGHT - _NEUTRAL_STEER_VALUE  # 1800
 _WHEELBASE_LENGTH = 0.3556  # Wheelbase in meters
 
 _DEFAULT_LIMIT = 0.25
-
-
+TOPIC = '/cmd_vel' if input("self driving? (y/n)") == 'y' else 'input_node'
 # Get user input with validation
 while True:
     try:
@@ -75,7 +74,7 @@ class MainControl(Node):
         self.mdev = mdev
         self.subscription = self.create_subscription(
             Twist,
-            'input_node',
+            TOPIC,
             self.listener_callback,
             10)  # Queue size of 10
 
