@@ -62,8 +62,8 @@ rtabmap_parameters = {
     "Grid/RangeMax": "5.0",
     "database_path": default_db_path,
     # Obstacle detection and raytracing
-    "Grid/MinGroundHeight": "-0.25",
-    "Grid/MaxGroundHeight": "0.05",
+    # "Grid/MinGroundHeight": "-0.25",
+    # "Grid/MaxGroundHeight": "0.05",
     "Grid/MaxObstacleHeight": "0.5",
     "Grid/RayTracing": "true",
     "Grid/MapFrameProjection": "true",
@@ -91,8 +91,6 @@ def generate_launch_description():
                                         description='Path to store or load the RTAB-Map database file'))
     ld.add_action(DeclareLaunchArgument('autostart', default_value='true',
                                         description='Automatically startup the nav2 stack'))
-    ld.add_action(DeclareLaunchArgument('container_name', default_value='nav2_container',
-                                        description='the name of container that nodes will load in if use composition'))
     ld.add_action(DeclareLaunchArgument('use_respawn', default_value='False',
                                         description='Whether to respawn if a node crashes. Applied when composition is disabled.'))
     ld.add_action(DeclareLaunchArgument('log_level', default_value='info',
