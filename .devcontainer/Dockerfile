@@ -14,6 +14,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     wget \
     udev \
+    git-lfs \
     software-properties-common \
     && locale-gen en_US en_US.UTF-8 \
     && update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
