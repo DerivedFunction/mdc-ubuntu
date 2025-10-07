@@ -113,10 +113,10 @@ controller_server:
       # https://github.com/ROBOTIS-GIT/turtlebot3_simulations/issues/75
       acc_lim_x: 5.0           # Maximum forward acceleration (m/s^2)
       acc_lim_y: 0.0           # Maximum lateral acceleration (m/s^2)
-      acc_lim_theta: 1.5       # Maximum angular acceleration (rad/s^2)
+      acc_lim_theta: 2.5       # Maximum angular acceleration (rad/s^2)
       decel_lim_x: -5.0        # Maximum forward deceleration (m/s^2)
       decel_lim_y: 0.0         # Maximum lateral deceleration (m/s^2)
-      decel_lim_theta: -1.4    # Maximum angular deceleration (rad/s^2)
+      decel_lim_theta: -2.5   # Maximum angular deceleration (rad/s^2)
       # Steering angle hardware limits: ±22.5° (see main_control.py, MSC_config)
       vx_samples: 20           # Number of velocity samples in x
       vy_samples: 5            # Number of velocity samples in y
@@ -126,18 +126,18 @@ controller_server:
       angular_granularity: 0.025 # Step size for angular simulation (rad)
       transform_tolerance: 0.2 # TF transform tolerance (s)
       xy_goal_tolerance: 0.25  # Position tolerance for goal (m)
-      trans_stopped_velocity: 0.1 # Velocity to consider robot stopped (m/s)
+      trans_stopped_velocity: 0.15 # Velocity to consider robot stopped (m/s)
       short_circuit_trajectory_evaluation: true # Stop evaluating if a valid trajectory is found
       stateful: true           # Keep state between runs
       critics: ["RotateToGoal", "Oscillation", "BaseObstacle", "GoalAlign", "PathAlign", "PathDist", "GoalDist"] # List of trajectory critics
       BaseObstacle.scale: 0.02 # Obstacle critic scale
-      PathAlign.scale: 15.0    # Path alignment critic scale
+      PathAlign.scale: 32.0    # Path alignment critic scale
       PathAlign.forward_point_distance: 0.5 # Distance for path alignment critic (m)
       GoalAlign.scale: 24.0    # Goal alignment critic scale
       GoalAlign.forward_point_distance: 0.5 # Distance for goal alignment critic (m)
       PathDist.scale: 32.0     # Path distance critic scale
       GoalDist.scale: 24.0     # Goal distance critic scale
-      RotateToGoal.scale: 5.0 # Rotate to goal critic scale
+      RotateToGoal.scale: 15.0 # Rotate to goal critic scale
       RotateToGoal.slowing_factor: 5.0 # Slowing factor for rotate to goal
       RotateToGoal.lookahead_time: -1.0 # Lookahead time for rotate to goal (s)
 
