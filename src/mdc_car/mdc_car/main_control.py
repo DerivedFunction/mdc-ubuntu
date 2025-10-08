@@ -50,7 +50,9 @@ while True:
             continue
         break
     except ValueError:
-        print("Please enter a valid integer.")
+        print("Using default value of 0")
+        ACCEL = 0
+        break
 
 # Linear equations: 
 # Speed (m/s) = M * abs(drive - _NEUTRAL_DRIVE_VALUE) + B
