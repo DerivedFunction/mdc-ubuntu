@@ -30,8 +30,9 @@ TOPIC = '/cmd_vel' if input("self driving? (y/n)") == 'y' else 'input_node'
 # Get user input with validation
 while True:
     try:
-        speed_input = input("Enter top speed (m/s): ")
-        if speed_input == "":
+        input = input("Enter top speed (m/s): ")
+        LIMIT = float(input) if isinstance(input, float) else ""
+        if LIMIT == "":
             print("No speed entered, using default of " + str(_DEFAULT_LIMIT))
             LIMIT = _DEFAULT_LIMIT
         if LIMIT <= 0:
