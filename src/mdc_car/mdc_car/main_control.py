@@ -26,13 +26,13 @@ _STEER_RIGHT_RANGE = _STEER_RIGHT - _NEUTRAL_STEER_VALUE  # 1800
 _WHEELBASE_LENGTH = 0.3556  # Wheelbase in meters
 
 _DEFAULT_LIMIT = 0.25
-
-
+TOPIC = '/cmd_vel' if input("self driving? (y/n)") == 'y' else 'input_node'
 # Get user input with validation
 while True:
     try:
-        speed_input = input("Enter top speed (m/s): ")
-        if speed_input == "":
+        input = input("Enter top speed (m/s): ")
+        LIMIT = float(input) if isinstance(input, float) else ""
+        if LIMIT == "":
             print("No speed entered, using default of " + str(_DEFAULT_LIMIT))
             LIMIT = _DEFAULT_LIMIT
         if LIMIT <= 0:
@@ -50,7 +50,9 @@ while True:
             continue
         break
     except ValueError:
-        print("Please enter a valid integer.")
+        print("Using default value of 0")
+        ACCEL = 0
+        break
 
 # Linear equations: 
 # Speed (m/s) = M * abs(drive - _NEUTRAL_DRIVE_VALUE) + B
@@ -75,7 +77,7 @@ class MainControl(Node):
         self.mdev = mdev
         self.subscription = self.create_subscription(
             Twist,
-            'input_node',
+            TOPIC,
             self.listener_callback,
             10)  # Queue size of 10
 
