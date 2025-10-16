@@ -26,12 +26,12 @@ _STEER_RIGHT_RANGE = _STEER_RIGHT - _NEUTRAL_STEER_VALUE  # 1800
 _WHEELBASE_LENGTH = 0.3556  # Wheelbase in meters
 
 _DEFAULT_LIMIT = 0.25
-TOPIC = '/cmd_vel' if input("self driving? (y/n)") == 'y' else 'input_node'
+TOPIC = '/cmd_vel'
 # Get user input with validation
 while True:
     try:
-        input = input("Enter top speed (m/s): ")
-        LIMIT = float(input) if isinstance(input, float) else ""
+        speed = input("Enter top speed (m/s): ")
+        LIMIT = float(speed) if isinstance(speed, float) else ""
         if LIMIT == "":
             print("No speed entered, using default of " + str(_DEFAULT_LIMIT))
             LIMIT = _DEFAULT_LIMIT
@@ -54,7 +54,7 @@ while True:
         ACCEL = 0
         break
 
-# Linear equations: 
+# Linear equations:
 # Speed (m/s) = M * abs(drive - _NEUTRAL_DRIVE_VALUE) + B
 _M_FORWARD = 0.002306997333  # Slope for forward motion
 _B_FORWARD = -0.4474072417   # Intercept for forward motion
