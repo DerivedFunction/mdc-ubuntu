@@ -101,13 +101,13 @@ controller_server:
     FollowPath:
       plugin: "dwb_core::DWBLocalPlanner" # Local planner plugin
       debug_trajectory_details: true   # Output debug info for trajectories
-      min_vel_x: 0.0                  # Minimum forward velocity (m/s)
+      min_vel_x: 0.0                  # Minimum forward velocity (m/s). Can be non-zero for non-holonomic robots.
       min_vel_y: 0.0                  # Minimum lateral velocity (m/s)
       max_vel_x: 1.0           # Maximum forward velocity (m/s)
       max_vel_y: 0.0           # Maximum lateral velocity (m/s)
       max_vel_theta: 0.5       # Maximum angular velocity (rad/s)
-      min_speed_xy: 0.0        # Minimum translational speed (m/s)
-      max_speed_xy: 1.0        # Maximum translational speed (m/s)
+      min_speed_xy: 0.2        # Minimum translational speed (m/s). Set > 0 to avoid in-place rotations.
+      max_speed_xy: 0.5        # Maximum translational speed (m/s). Should match your desired top speed.
       min_speed_theta: 0.0     # Minimum angular speed (rad/s)
       # Add high threshold velocity for turtlebot 3 issue.
       # https://github.com/ROBOTIS-GIT/turtlebot3_simulations/issues/75
