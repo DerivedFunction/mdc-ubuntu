@@ -124,7 +124,7 @@ controller_server:
       sim_time: 1.7            # Time to simulate trajectories (s)
       linear_granularity: 0.05 # Step size for linear simulation (m)
       angular_granularity: 0.025 # Step size for angular simulation (rad)
-      transform_tolerance: 0.2 # TF transform tolerance (s)
+      transform_tolerance: 5.0 # TF transform tolerance (s)
       xy_goal_tolerance: 0.25  # Position tolerance for goal (m)
       trans_stopped_velocity: 0.15 # Velocity to consider robot stopped (m/s)
       short_circuit_trajectory_evaluation: true # Stop evaluating if a valid trajectory is found
@@ -245,7 +245,7 @@ behavior_server:
       plugin: "nav2_behaviors/AssistedTeleop"     # Assisted teleop plugin
     global_frame: odom                            # Global frame for behaviors
     robot_base_frame: camera_base                 # Robot's base frame
-    transform_tolerance: 0.1                      # TF transform tolerance (s)
+    transform_tolerance: 0.5                      # TF transform tolerance (s)
     use_sim_time: true                            # Use simulation time if true
     simulate_ahead_time: 2.0                      # Time to simulate ahead (s)
     max_rotational_vel: 1.0                       # Max rotational velocity (rad/s)

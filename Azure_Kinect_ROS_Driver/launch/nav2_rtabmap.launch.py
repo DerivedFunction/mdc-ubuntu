@@ -45,7 +45,7 @@ rtabmap_parameters = {
     "subscribe_rgb": True,
     "use_sim_time": LaunchConfiguration("use_sim_time"),
     "approx_sync": True,
-    "approx_sync_max_interval": 0.04,
+    "approx_sync_max_interval": 5.0,
     # QoS settings: 2 = SensorDataQoS
     "qos_image": 2,
     "qos_imu": 2,
