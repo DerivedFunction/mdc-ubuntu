@@ -89,17 +89,17 @@ class MainControl(Node):
 
     def listener_callback(self, msg):
         # Calculate drive value based on linear.x (forward/backward velocity)
+        # This logic maps the input range (0, 1] to the output PWM range
+        # [_DRIVE_MIN, _TOP_DRIVE], ensuring any non-zero input
+        # overcomes the motor's physical dead zone.
         if msg.linear.x > 0:
-            point = _FORWARD_DRIVE_MIN
-            range_val = _TOP_FORWARD_DRIVE - _FORWARD_DRIVE_MIN
+            drive = int((msg.linear.x * (_TOP_FORWARD_DRIVE - _FORWARD_DRIVE_MIN)) + _FORWARD_DRIVE_MIN)
         elif msg.linear.x < 0:
-            point = _BACKWARD_DRIVE_MIN
-            range_val = _BACKWARD_DRIVE_MIN - _TOP_BACKWARD_DRIVE
+            # For reverse, msg.linear.x is negative, so we subtract from the minimum
+            drive = int((msg.linear.x * (_BACKWARD_DRIVE_MIN - _TOP_BACKWARD_DRIVE)) + _BACKWARD_DRIVE_MIN)
         else:
-            point = _NEUTRAL_DRIVE_VALUE
-            range_val = 0
+            drive = _NEUTRAL_DRIVE_VALUE
 
-        drive = int(msg.linear.x * range_val + point)
         drive = max(_TOP_BACKWARD_DRIVE, min(_TOP_FORWARD_DRIVE, drive))  # Clamp drive value
         drive_offset = abs(drive - _NEUTRAL_DRIVE_VALUE)
         # Calculate steer value based on angular.z (steering angle)
