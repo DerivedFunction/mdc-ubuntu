@@ -129,15 +129,23 @@ controller_server:
       trans_stopped_velocity: 0.15 # Velocity to consider robot stopped (m/s)
       short_circuit_trajectory_evaluation: true # Stop evaluating if a valid trajectory is found
       stateful: true           # Keep state between runs
-      critics: ["RotateToGoal", "Oscillation", "BaseObstacle", "GoalAlign", "PathAlign", "PathDist", "GoalDist"] # List of trajectory critics
-      BaseObstacle.scale: 0.02 # Obstacle critic scale
-      PathAlign.scale: 32.0    # Path alignment critic scale
-      PathAlign.forward_point_distance: 0.5 # Distance for path alignment critic (m)
-      GoalAlign.scale: 24.0    # Goal alignment critic scale
-      GoalAlign.forward_point_distance: 0.5 # Distance for goal alignment critic (m)
-      PathDist.scale: 32.0     # Path distance critic scale
-      GoalDist.scale: 24.0     # Goal distance critic scale
-      RotateToGoal.scale: 15.0 # Rotate to goal critic scale
+      # Critic order doesn't matter, but the scale (weight) is very important.
+      critics: ["RotateToGoal", "Oscillation", "BaseObstacle", "GoalAlign", "PathAlign", "PathDist", "GoalDist"]
+      # --- Critic Scales ---
+      # BaseObstacle: Scores trajectories on how close they are to obstacles. This should be high for safety.
+      BaseObstacle.scale: 0.5 # Previous value of 0.02 was too low, making obstacle avoidance a low priority.
+      # PathDist: Tries to keep the robot on the global path.
+      PathDist.scale: 10.0     # Lowered from 32.0. Still important, but allows more flexibility to avoid obstacles.
+      # GoalDist: Tries to make progress towards the final goal.
+      GoalDist.scale: 8.0     # Lowered from 24.0. This and PathDist should be balanced.
+      # PathAlign: Tries to keep the robot's heading aligned with the path's direction. Good for car-like robots.
+      PathAlign.scale: 16.0    # Lowered from 32.0. Prevents overly rigid path following.
+      PathAlign.forward_point_distance: 0.3 # Look 0.3m ahead on the path for alignment.
+      # GoalAlign: Tries to align with the path direction near the goal.
+      GoalAlign.scale: 12.0    # Lowered from 24.0.
+      GoalAlign.forward_point_distance: 0.3 # Look 0.3m ahead on the path for alignment.
+      # RotateToGoal: Helps the robot achieve the final goal orientation once it's close.
+      RotateToGoal.scale: 5.0 # Lowered from 15.0. Less aggressive rotation at the end.
       RotateToGoal.slowing_factor: 5.0 # Slowing factor for rotate to goal
       RotateToGoal.lookahead_time: -1.0 # Lookahead time for rotate to goal (s)
 
