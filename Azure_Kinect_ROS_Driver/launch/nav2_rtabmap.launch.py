@@ -45,7 +45,7 @@ rtabmap_parameters = {
     "subscribe_rgb": True,
     "use_sim_time": LaunchConfiguration("use_sim_time"),
     "approx_sync": True,
-    "approx_sync_max_interval": 5.0,
+    "approx_sync_max_interval": 60.0,
     # QoS settings: 2 = SensorDataQoS
     "qos_image": 2,
     "qos_imu": 2,
@@ -122,7 +122,7 @@ def generate_launch_description():
             'depth_mode': 'NFOV_UNBINNED',
             'color_enabled': True,
             'color_resolution': '720P',
-            'fps': 15,
+            'fps': 5,
             'point_cloud': False,
             'rgb_point_cloud': False,
             'point_cloud_in_depth_frame': False,

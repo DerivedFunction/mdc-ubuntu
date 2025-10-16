@@ -124,7 +124,7 @@ controller_server:
       sim_time: 1.7            # Time to simulate trajectories (s)
       linear_granularity: 0.05 # Step size for linear simulation (m)
       angular_granularity: 0.025 # Step size for angular simulation (rad)
-      transform_tolerance: 5.0 # TF transform tolerance (s)
+      transform_tolerance: 60.0 # TF transform tolerance (s)
       xy_goal_tolerance: 0.25  # Position tolerance for goal (m)
       trans_stopped_velocity: 0.15 # Velocity to consider robot stopped (m/s)
       short_circuit_trajectory_evaluation: true # Stop evaluating if a valid trajectory is found
