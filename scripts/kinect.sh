@@ -8,4 +8,4 @@ fi
 cd Azure_Kinect_ROS_Driver
 source install/setup.bash
 export DISPLAY=:0
-ros2 launch Azure_Kinect_ROS_Driver/launch/kinect.launch.py
+ros2 launch launch/kinect.launch.py
