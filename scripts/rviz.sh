@@ -5,4 +5,4 @@ if [ "$(basename "$PWD")" = "scripts" ]; then
 fi
 # --- Launch ---
 source install/setup.bash
-ros2 launch rviz2.launch.py config:=config/nav2_slam.rviz
+ros2 launch launch/rviz2.launch.py config:=config/nav2_slam.rviz
