@@ -17,7 +17,12 @@ _NEUTRAL_DRIVE_VALUE = 6000
 _BACKWARD_DRIVE_MIN = 5640
 _FORWARD_DRIVE_MIN = 6200
 _NEUTRAL_STEER_VALUE = 5800
-_STEER_LEFT = 4200
+
+# Steering Trim: Adjust this value to correct physical misalignment.
+# Positive value corrects a pull to the left.
+# Negative value corrects a pull to the right.
+_STEERING_TRIM = 50  # Start with a value like 50 and adjust as needed.
+_STEER_LEFT = 4200 
 _STEER_RIGHT = 7600
 _STEER_LEFT_RANGE = _NEUTRAL_STEER_VALUE - _STEER_LEFT  # 1600
 _STEER_RIGHT_RANGE = _STEER_RIGHT - _NEUTRAL_STEER_VALUE  # 1800
@@ -104,7 +109,7 @@ class MainControl(Node):
             steer_range = _STEER_LEFT_RANGE
         else:
             steer_range = 0
-        steer = int(msg.angular.z * steer_range + _NEUTRAL_STEER_VALUE)
+        steer = int(msg.angular.z * steer_range + _NEUTRAL_STEER_VALUE + _STEERING_TRIM)
         steer = max(_STEER_LEFT, min(_STEER_RIGHT, steer))  # Clamp steer value
         steer_offset = abs(steer - _NEUTRAL_STEER_VALUE)
         # Calculate steering angle in degrees
