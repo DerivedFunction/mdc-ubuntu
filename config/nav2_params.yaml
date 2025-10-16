@@ -101,20 +101,20 @@ controller_server:
     FollowPath:
       plugin: "dwb_core::DWBLocalPlanner" # Local planner plugin
       debug_trajectory_details: true   # Output debug info for trajectories
-      min_vel_x: -0.2                 # Minimum velocity (m/s). Set to a negative value to allow reversing.
+      min_vel_x: -0.5                 # Minimum velocity (m/s). Set to a negative value to allow reversing.
       min_vel_y: 0.0                  # Minimum lateral velocity (m/s)
-      max_vel_x: 0.5           # Maximum forward velocity (m/s). Should match max_speed_xy.
+      max_vel_x: 0.5           # Maximum forward velocity (m/s). A safer speed for tuning.
       max_vel_y: 0.0           # Maximum lateral velocity (m/s)
       max_vel_theta: 0.4       # Maximum angular velocity (rad/s). Lower for smoother turns.
       min_speed_xy: 0.1        # Minimum translational speed (m/s). Set > 0 to avoid in-place rotations.
-      max_speed_xy: 0.5        # Maximum translational speed (m/s). Should match your desired top speed.
+      max_speed_xy: 0.5        # Maximum translational speed (m/s). A safer speed for tuning.
       min_speed_theta: 0.0     # Minimum angular speed (rad/s)
       # Add high threshold velocity for turtlebot 3 issue.
       # https://github.com/ROBOTIS-GIT/turtlebot3_simulations/issues/75
-      acc_lim_x: 1.0           # Maximum forward acceleration (m/s^2). Lowered for a slow car.
+      acc_lim_x: 1.0           # Maximum forward acceleration (m/s^2). Reduced for smoother starts.
       acc_lim_y: 0.0           # Maximum lateral acceleration (m/s^2)
       acc_lim_theta: 1.5       # Maximum angular acceleration (rad/s^2). Lowered for smoother steering.
-      decel_lim_x: -1.0        # Maximum forward deceleration (m/s^2). Lowered for a slow car.
+      decel_lim_x: -1.0        # Maximum forward deceleration (m/s^2). Reduced for smoother stops.
       decel_lim_y: 0.0         # Maximum lateral deceleration (m/s^2)
       decel_lim_theta: -1.5   # Maximum angular deceleration (rad/s^2). Lowered for smoother steering.
       # Steering angle hardware limits: ±22.5° (see main_control.py, MSC_config)
