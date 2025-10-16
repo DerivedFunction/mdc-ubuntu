@@ -30,11 +30,12 @@ TOPIC = '/cmd_vel'
 # Get user input with validation
 while True:
     try:
-        speed = input("Enter top speed (m/s): ")
-        LIMIT = float(speed) if isinstance(speed, float) else ""
-        if LIMIT == "":
+        speed_str = input("Enter top speed (m/s): ")
+        if not speed_str:
             print("No speed entered, using default of " + str(_DEFAULT_LIMIT))
             LIMIT = _DEFAULT_LIMIT
+            break
+        LIMIT = float(speed_str)
         if LIMIT <= 0:
             print("Speed must be positive.")
             continue
