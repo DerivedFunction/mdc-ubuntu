@@ -10,7 +10,7 @@ class Listener(Node):
         super().__init__('listener')
         self.input_listener = self.create_subscription(
             Twist,
-            'input_node',
+            '/cmd_vel',
             self.listener_callback,
             10)
         self.input_listener

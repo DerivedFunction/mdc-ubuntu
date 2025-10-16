@@ -9,7 +9,7 @@ from .include.keyboard import Keyboard
 class Input(Node):
     def __init__(self, input_type='keyboard'):
         super().__init__('input_node')
-        self.publisher_ = self.create_publisher(Twist, 'input_node', 10)
+        self.publisher_ = self.create_publisher(Twist, '/cmd_vel', 10)
         timer_period = 0.1  # seconds
         self.timer = None
         self.input_device = None
