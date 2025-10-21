@@ -89,24 +89,22 @@ class MainControl(Node):
 
     def listener_callback(self, msg):
         # Calculate drive value based on linear.x (forward/backward velocity)
-        # This logic maps the input range (0, 1] to the output PWM range
-        # [_DRIVE_MIN, _TOP_DRIVE], ensuring any non-zero input
-        # overcomes the motor's physical dead zone.
         if msg.linear.x > 0:
-            drive = int((msg.linear.x * (_TOP_FORWARD_DRIVE - _FORWARD_DRIVE_MIN)) + _FORWARD_DRIVE_MIN)
+            drive_range = _TOP_FORWARD_DRIVE - _FORWARD_DRIVE_MIN
+            drive = int(msg.linear.x * drive_range + _FORWARD_DRIVE_MIN)
         elif msg.linear.x < 0:
-            # For reverse, msg.linear.x is negative, so we subtract from the minimum
-            drive = int((msg.linear.x * (_BACKWARD_DRIVE_MIN - _TOP_BACKWARD_DRIVE)) + _BACKWARD_DRIVE_MIN)
+            drive_range = _BACKWARD_DRIVE_MIN - _TOP_BACKWARD_DRIVE
+            drive = int(msg.linear.x * drive_range + _BACKWARD_DRIVE_MIN)
         else:
             drive = _NEUTRAL_DRIVE_VALUE
 
         drive = max(_TOP_BACKWARD_DRIVE, min(_TOP_FORWARD_DRIVE, drive))  # Clamp drive value
         drive_offset = abs(drive - _NEUTRAL_DRIVE_VALUE)
-        # Calculate steer value based on angular.z (steering angle)
-        if msg.angular.z > 0:
-            steer_range = _STEER_RIGHT_RANGE
-        elif msg.angular.z < 0:
+        # Calculate steer value based on angular.z (Positive angular.z is a turn to the LEFT)
+        if msg.angular.z > 0: # Turn LEFT
             steer_range = _STEER_LEFT_RANGE
+        elif msg.angular.z < 0: # Turn RIGHT
+            steer_range = _STEER_RIGHT_RANGE
         else:
             steer_range = 0
         steer = int(msg.angular.z * steer_range + _NEUTRAL_STEER_VALUE + _STEERING_TRIM)
