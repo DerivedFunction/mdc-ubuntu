@@ -54,7 +54,7 @@ class Input(Node):
             self.steer = 0.0
         else:
             self.drive = float((up - down))
-            self.steer = float((right - left))
+            self.steer = float((left - right)) # Invert steering for correct left/right mapping
 
         msg.linear.x = self.drive  # Velocity in x (m/s)
         msg.angular.z = self.steer  # Angle of rotation in z (rad/s)
