@@ -32,7 +32,7 @@ class Input(Node):
         axis, buttons = self.input_device.read_input()
 
         self.drive = round(axis[1] * -1, 2)
-        self.steer = round(axis[3], 2)
+        self.steer = round(axis[3] * -1, 2) # Invert to match ROS standard (left is positive)
         msg.linear.x = self.drive if abs(self.drive) >= 0.05 else 0.0
         msg.angular.z = self.steer if abs(self.steer) >= 0.05 else 0.0
 

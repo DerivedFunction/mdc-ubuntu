@@ -100,14 +100,14 @@ class MainControl(Node):
 
         drive = max(_TOP_BACKWARD_DRIVE, min(_TOP_FORWARD_DRIVE, drive))  # Clamp drive value
         drive_offset = abs(drive - _NEUTRAL_DRIVE_VALUE)
-        # Calculate steer value based on angular.z (Positive angular.z is a turn to the LEFT)
-        if msg.angular.z > 0: # Turn LEFT
+        # Calculate steer value based on angular.z (Positive angular.z is a turn to the LEFT, Negative is RIGHT)
+        if msg.angular.z > 0: # Turn LEFT (Counter-Clockwise)
             steer_range = _STEER_LEFT_RANGE
-        elif msg.angular.z < 0: # Turn RIGHT
-            steer_range = _STEER_RIGHT_RANGE
+        elif msg.angular.z < 0: # Turn RIGHT (Clockwise)
+            steer_range = _STEER_LEFT_RANGE
         else:
             steer_range = 0
-        steer = int(msg.angular.z * steer_range + _NEUTRAL_STEER_VALUE + _STEERING_TRIM)
+        steer = int(_NEUTRAL_STEER_VALUE - msg.angular.z * steer_range + _STEERING_TRIM)
         steer = max(_STEER_LEFT, min(_STEER_RIGHT, steer))  # Clamp steer value
         steer_offset = abs(steer - _NEUTRAL_STEER_VALUE)
         # Calculate steering angle in degrees
