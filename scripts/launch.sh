@@ -12,3 +12,4 @@ if [[ "$1" == "m" ]]; then
   ros2 launch Azure_Kinect_ROS_Driver/launch/slam_rtabmap.launch.py
 else
   ros2 launch Azure_Kinect_ROS_Driver/launch/nav2_rtabmap.launch.py
+fi
